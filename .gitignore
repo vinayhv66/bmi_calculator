@@ -1,0 +1,6 @@
+# Claude configuration overrides and local states
+.claude/settings.local.json
+.claude/agents/
+.claude/skills/
+.claude/rules/
+.claude/.mcp.json

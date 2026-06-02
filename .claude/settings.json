@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read project files",
+      "Write project files",
+      "Run dev server"
+    ]
+  }
+}

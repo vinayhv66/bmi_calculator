@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calorie Calculator – TDEE & Daily Calorie Needs</title>
+  <meta name="description" content="Calculate your Total Daily Energy Expenditure (TDEE), BMR, and ideal calorie intake for your goal. Includes macronutrient breakdown." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="brand-cal">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="url(#calLogoGrad)"/>
+          <path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white" transform="translate(4,2)"/>
+          <defs>
+            <linearGradient id="calLogoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#f97316"/>
+              <stop offset="1" stop-color="#ef4444"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="logo-text">BMI<span class="logo-accent" style="color:#f97316">Calc</span></span>
+      </a>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">BMI Calculator</a>
+        <a href="calories.html" class="nav-link active nav-link-calories" style="--brand-primary:#f97316; background:rgba(249,115,22,0.08); border-color:rgba(249,115,22,0.25); color:#f97316 !important">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          Calories
+        </a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Calculator Section (no hero – straight to the tool) -->
+  <section id="cal-calculator" class="calc-section" style="padding-top:2.5rem">
+    <div class="container">
+
+      <!-- Page heading + back link row -->
+      <div class="cal-page-header scroll-reveal">
+        <a href="index.html" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          BMI Calculator
+        </a>
+        <div class="cal-page-title-block">
+          <span class="hero-badge hero-badge-cal" style="margin:0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Science-Based
+          </span>
+          <h1 class="cal-page-title">Calorie &amp; <span class="hero-gradient-cal">TDEE</span> Calculator</h1>
+        </div>
+      </div>
+
+      <div class="calc-grid">
+
+        <!-- Input Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
+          <div class="card-header">
+            <h2 class="card-title">Your Information</h2>
+            <p class="card-subtitle">We'll calculate your ideal daily calories</p>
+          </div>
+
+          <!-- Pre-fill notice -->
+          <div class="prefill-notice hidden" id="prefillNotice">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span id="prefillText">Pre-filled from your BMI calculation!</span>
+          </div>
+
+          <!-- Unit Toggle -->
+          <div class="unit-toggle-group" role="group" aria-label="Unit system">
+            <button class="unit-btn active" id="btnMetric" onclick="setUnit('metric')">Metric</button>
+            <button class="unit-btn" id="btnImperial" onclick="setUnit('imperial')">Imperial</button>
+          </div>
+
+          <form id="calForm" class="bmi-form" novalidate>
+
+            <!-- Age -->
+            <div class="form-group">
+              <label class="form-label" for="calAge">Age <span class="label-hint">(15 – 100)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                <input class="form-input" type="number" id="calAge" placeholder="e.g. 28" min="15" max="100" />
+                <span class="input-unit">yrs</span>
+              </div>
+              <div class="form-error" id="calAgeError"></div>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <div class="gender-group">
+                <label class="gender-option">
+                  <input type="radio" name="calGender" value="male" id="calGenderMale" checked />
+                  <span class="gender-card">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                    Male
+                  </span>
+                </label>
+                <label class="gender-option">
+                  <input type="radio" name="calGender" value="female" id="calGenderFemale" />
+                  <span class="gender-card">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/><path d="M9 20h6"/></svg>
+                    Female
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Height Metric -->
+            <div class="form-group" id="calHeightMetricGroup">
+              <label class="form-label" for="calHeightCm">Height</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4 6l3 3M4 12h4M4 18l3-3M20 6l-3 3M20 12h-4M20 18l-3-3"/></svg>
+                <input class="form-input" type="number" id="calHeightCm" placeholder="e.g. 175" min="100" max="280" />
+                <span class="input-unit">cm</span>
+              </div>
+              <div class="form-error" id="calHeightCmError"></div>
+            </div>
+
+            <!-- Height Imperial -->
+            <div class="form-group hidden" id="calHeightImperialGroup">
+              <label class="form-label">Height</label>
+              <div class="imperial-row">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg>
+                  <input class="form-input" type="number" id="calHeightFt" placeholder="5" min="1" max="9" />
+                  <span class="input-unit">ft</span>
+                </div>
+                <div class="input-wrapper">
+                  <input class="form-input" type="number" id="calHeightIn" placeholder="9" min="0" max="11" />
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-error" id="calHeightImperialError"></div>
+            </div>
+
+            <!-- Weight Metric -->
+            <div class="form-group" id="calWeightMetricGroup">
+              <label class="form-label" for="calWeightKg">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="calWeightKg" placeholder="e.g. 70" min="30" max="600" step="0.1" />
+                <span class="input-unit">kg</span>
+              </div>
+              <div class="form-error" id="calWeightKgError"></div>
+            </div>
+
+            <!-- Weight Imperial -->
+            <div class="form-group hidden" id="calWeightImperialGroup">
+              <label class="form-label" for="calWeightLbs">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="calWeightLbs" placeholder="e.g. 154" min="66" max="1300" step="0.1" />
+                <span class="input-unit">lbs</span>
+              </div>
+              <div class="form-error" id="calWeightLbsError"></div>
+            </div>
+
+            <!-- Activity Level -->
+            <div class="form-group">
+              <label class="form-label">Activity Level</label>
+              <div class="activity-grid">
+                <label class="activity-option">
+                  <input type="radio" name="activity" value="1.2" id="actSedentary" checked />
+                  <span class="activity-card">
+                    <span class="activity-dot"></span>
+                    <span class="activity-text">
+                      <span class="activity-name">Sedentary</span>
+                      <span class="activity-desc">Little or no exercise, desk job</span>
+                    </span>
+                    <span class="activity-mult">×1.2</span>
+                  </span>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="activity" value="1.375" id="actLight" />
+                  <span class="activity-card">
+                    <span class="activity-dot"></span>
+                    <span class="activity-text">
+                      <span class="activity-name">Lightly Active</span>
+                      <span class="activity-desc">Light exercise 1–3 days/week</span>
+                    </span>
+                    <span class="activity-mult">×1.375</span>
+                  </span>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="activity" value="1.55" id="actModerate" />
+                  <span class="activity-card">
+                    <span class="activity-dot"></span>
+                    <span class="activity-text">
+                      <span class="activity-name">Moderately Active</span>
+                      <span class="activity-desc">Moderate exercise 3–5 days/week</span>
+                    </span>
+                    <span class="activity-mult">×1.55</span>
+                  </span>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="activity" value="1.725" id="actVery" />
+                  <span class="activity-card">
+                    <span class="activity-dot"></span>
+                    <span class="activity-text">
+                      <span class="activity-name">Very Active</span>
+                      <span class="activity-desc">Hard exercise 6–7 days/week</span>
+                    </span>
+                    <span class="activity-mult">×1.725</span>
+                  </span>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="activity" value="1.9" id="actSuper" />
+                  <span class="activity-card">
+                    <span class="activity-dot"></span>
+                    <span class="activity-text">
+                      <span class="activity-name">Super Active</span>
+                      <span class="activity-desc">Physical job + hard exercise daily</span>
+                    </span>
+                    <span class="activity-mult">×1.9</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Goal -->
+            <div class="form-group">
+              <label class="form-label">Your Goal</label>
+              <div class="goal-grid">
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="lose2" id="goalLose2" />
+                  <span class="goal-card">
+                    <span class="goal-emoji">📉</span>
+                    Lose weight<br/><small style="font-weight:400;font-size:0.7rem">−500 kcal/day</small>
+                  </span>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="lose1" id="goalLose1" />
+                  <span class="goal-card">
+                    <span class="goal-emoji">🔽</span>
+                    Mild loss<br/><small style="font-weight:400;font-size:0.7rem">−250 kcal/day</small>
+                  </span>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="maintain" id="goalMaintain" checked />
+                  <span class="goal-card">
+                    <span class="goal-emoji">⚖️</span>
+                    Maintain<br/><small style="font-weight:400;font-size:0.7rem">At TDEE</small>
+                  </span>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="gain1" id="goalGain1" />
+                  <span class="goal-card">
+                    <span class="goal-emoji">🔼</span>
+                    Mild gain<br/><small style="font-weight:400;font-size:0.7rem">+250 kcal/day</small>
+                  </span>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="gain2" id="goalGain2" />
+                  <span class="goal-card">
+                    <span class="goal-emoji">📈</span>
+                    Gain muscle<br/><small style="font-weight:400;font-size:0.7rem">+500 kcal/day</small>
+                  </span>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="aggressive" id="goalAgg" />
+                  <span class="goal-card">
+                    <span class="goal-emoji">⚡</span>
+                    Fast loss<br/><small style="font-weight:400;font-size:0.7rem">−750 kcal/day</small>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="cal-calc-btn" id="calCalcBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              Calculate My Calories
+            </button>
+
+            <button type="button" class="reset-btn" onclick="resetCalForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card cal-result-card scroll-reveal" style="--reveal-delay:0.15s" id="calResultCard">
+          <div class="cal-placeholder" id="calPlaceholder">
+            <div class="cal-placeholder-icon">🔥</div>
+            <p class="placeholder-text">Enter your details and click <strong>Calculate My Calories</strong> to see your daily energy needs</p>
+          </div>
+
+          <div class="cal-result-section hidden fade-in-up" id="calResultContent">
+
+            <!-- TDEE Hero -->
+            <div class="tdee-hero">
+              <div class="tdee-label">Your Daily Calorie Need (TDEE)</div>
+              <div class="tdee-value" id="tdeeValue">–</div>
+              <div class="tdee-unit">kcal / day to <span id="tdeeGoalLabel">maintain weight</span></div>
+            </div>
+
+            <!-- BMR stat -->
+            <div class="bmr-info">
+              <span class="bmr-info-label">🫀 Basal Metabolic Rate (BMR)</span>
+              <span class="bmr-info-value" id="bmrValue">–</span>
+            </div>
+
+            <!-- Goal Strip -->
+            <div>
+              <div class="section-title" style="margin-bottom:0.75rem">All Calorie Targets</div>
+              <div class="goal-strip" id="goalStrip"></div>
+            </div>
+
+            <!-- Macros -->
+            <div class="macro-section">
+              <div class="macro-title">Recommended Macronutrients</div>
+              <div class="macro-bars">
+                <div class="macro-row">
+                  <span class="macro-name">Protein</span>
+                  <div class="macro-bar-track"><div class="macro-bar-fill protein" id="barProtein"></div></div>
+                  <span class="macro-pct" id="pctProtein"></span>
+                  <span class="macro-grams" id="gProtein"></span>
+                </div>
+                <div class="macro-row">
+                  <span class="macro-name">Carbs</span>
+                  <div class="macro-bar-track"><div class="macro-bar-fill carbs" id="barCarbs"></div></div>
+                  <span class="macro-pct" id="pctCarbs"></span>
+                  <span class="macro-grams" id="gCarbs"></span>
+                </div>
+                <div class="macro-row">
+                  <span class="macro-name">Fat</span>
+                  <div class="macro-bar-track"><div class="macro-bar-fill fat" id="barFat"></div></div>
+                  <span class="macro-pct" id="pctFat"></span>
+                  <span class="macro-grams" id="gFat"></span>
+                </div>
+              </div>
+              <p style="font-size:0.75rem;color:var(--muted-foreground);margin-top:0.25rem">
+                Based on 30% protein, 40% carbs, 30% fat of your target calories.
+              </p>
+            </div>
+
+            <!-- Health tip -->
+            <div class="health-message" id="calHealthMsg"></div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Cards -->
+      <div class="info-grid scroll-reveal" style="margin-top:1.5rem; --reveal-delay:0.1s">
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(99,102,241,0.1); color:#6366f1">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3 class="info-title">What is BMR?</h3>
+          <p class="info-text">Basal Metabolic Rate is the number of calories your body needs to perform basic life-sustaining functions at complete rest — breathing, circulation, and cell production.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(249,115,22,0.1); color:#f97316">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <h3 class="info-title">What is TDEE?</h3>
+          <p class="info-text">Total Daily Energy Expenditure is your BMR multiplied by an activity factor. It represents the total calories you burn in a day including exercise and movement.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(16,185,129,0.1); color:#10b981">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3 class="info-title">Mifflin-St Jeor Formula</h3>
+          <p class="info-text">This calculator uses the Mifflin-St Jeor equation, considered the most accurate for estimating BMR. It's recommended by dietitians over older formulas like Harris-Benedict.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(139,92,246,0.1); color:#8b5cf6">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <h3 class="info-title">Macronutrients</h3>
+          <p class="info-text">Protein, carbohydrates, and fats each play different roles. A balanced split supports energy levels, muscle maintenance, and hormonal health simultaneously.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <a href="index.html" class="logo">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="url(#calLogoGrad2)"/>
+            <path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white" transform="translate(4,2)"/>
+            <defs>
+              <linearGradient id="calLogoGrad2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#f97316"/>
+                <stop offset="1" stop-color="#ef4444"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="logo-text">BMI<span class="logo-accent" style="color:#f97316">Calc</span></span>
+        </a>
+        <nav class="footer-nav">
+          <a href="index.html" class="footer-link">BMI Calculator</a>
+          <a href="calories.html" class="footer-link">Calories Calculator</a>
+        </nav>
+        <p class="footer-disclaimer">This calculator provides estimates for informational purposes only. Consult a registered dietitian for personalized nutrition advice.</p>
+        <p class="footer-copy">© 2026 BMICalc. Built with care for your health.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="calories.js"></script>
+</body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMI Calculator – Body Mass Index Tool</title>
+  <meta name="description" content="Calculate your Body Mass Index (BMI) instantly. Get personalized health insights, BMI category, ideal weight range, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="url(#logoGrad)"/>
+          <path d="M16 7C11.03 7 7 11.03 7 16s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7zm-1 3v5.27l4.5 2.73-.73 1.2L13 18V12h2z" fill="white"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6366f1"/>
+              <stop offset="1" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="logo-text">BMI<span class="logo-accent">Calc</span></span>
+      </div>
+      <nav class="header-nav">
+        <a href="#calculator" class="nav-link active">Calculator</a>
+        <a href="#about" class="nav-link">About BMI</a>
+        <a href="#chart" class="nav-link">BMI Chart</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        <a href="calories.html" class="nav-link nav-link-calories">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          Calories
+        </a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Calculator Section (no hero – straight to the tool) -->
+  <section id="calculator" class="calc-section" style="padding-top:2.5rem">
+    <div class="container">
+
+      <!-- Compact page header -->
+      <div class="bmi-page-header scroll-reveal">
+        <div class="bmi-page-title-block">
+          <span class="hero-badge" style="margin:0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Free &amp; Accurate
+          </span>
+          <h1 class="bmi-page-title">Body Mass Index <span class="hero-gradient">Calculator</span></h1>
+        </div>
+        <p class="bmi-page-sub">Understand your weight status instantly. Based on WHO &amp; CDC standards.</p>
+      </div>
+
+      <div class="calc-grid">
+
+        <!-- Input Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
+          <div class="card-header">
+            <h2 class="card-title">Enter Your Details</h2>
+            <p class="card-subtitle">Fill in your measurements below</p>
+          </div>
+
+          <!-- Unit Toggle -->
+          <div class="unit-toggle-group" role="group" aria-label="Unit system">
+            <button class="unit-btn active" id="btnMetric" data-unit="metric" onclick="setUnit('metric')">Metric</button>
+            <button class="unit-btn" id="btnImperial" data-unit="imperial" onclick="setUnit('imperial')">Imperial</button>
+          </div>
+
+          <form id="bmiForm" class="bmi-form" novalidate>
+            <!-- Age -->
+            <div class="form-group">
+              <label class="form-label" for="ageInput">Age <span class="label-hint">(2 – 120 years)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                <input class="form-input" type="number" id="ageInput" placeholder="e.g. 25" min="2" max="120" />
+                <span class="input-unit">yrs</span>
+              </div>
+              <div class="form-error" id="ageError"></div>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <div class="gender-group">
+                <label class="gender-option" id="genderMaleLabel">
+                  <input type="radio" name="gender" value="male" id="genderMale" checked />
+                  <span class="gender-card">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                    Male
+                  </span>
+                </label>
+                <label class="gender-option" id="genderFemaleLabel">
+                  <input type="radio" name="gender" value="female" id="genderFemale" />
+                  <span class="gender-card">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/><path d="M9 20h6"/></svg>
+                    Female
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Height (Metric) -->
+            <div class="form-group" id="heightMetricGroup">
+              <label class="form-label" for="heightCm">Height</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4 6l3 3M4 12h4M4 18l3-3M20 6l-3 3M20 12h-4M20 18l-3-3"/></svg>
+                <input class="form-input" type="number" id="heightCm" placeholder="e.g. 175" min="50" max="280" />
+                <span class="input-unit">cm</span>
+              </div>
+              <div class="form-error" id="heightCmError"></div>
+            </div>
+
+            <!-- Height (Imperial) -->
+            <div class="form-group hidden" id="heightImperialGroup">
+              <label class="form-label">Height</label>
+              <div class="imperial-row">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg>
+                  <input class="form-input" type="number" id="heightFt" placeholder="5" min="1" max="9" />
+                  <span class="input-unit">ft</span>
+                </div>
+                <div class="input-wrapper">
+                  <input class="form-input" type="number" id="heightIn" placeholder="9" min="0" max="11" />
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-error" id="heightImperialError"></div>
+            </div>
+
+            <!-- Weight (Metric) -->
+            <div class="form-group" id="weightMetricGroup">
+              <label class="form-label" for="weightKg">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="weightKg" placeholder="e.g. 70" min="2" max="600" step="0.1" />
+                <span class="input-unit">kg</span>
+              </div>
+              <div class="form-error" id="weightKgError"></div>
+            </div>
+
+            <!-- Weight (Imperial) -->
+            <div class="form-group hidden" id="weightImperialGroup">
+              <label class="form-label" for="weightLbs">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="weightLbs" placeholder="e.g. 154" min="5" max="1300" step="0.1" />
+                <span class="input-unit">lbs</span>
+              </div>
+              <div class="form-error" id="weightLbsError"></div>
+            </div>
+
+            <button type="submit" class="calc-btn" id="calcBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              Calculate BMI
+            </button>
+
+            <button type="button" class="reset-btn" id="resetBtn" onclick="resetForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card result-card scroll-reveal" style="--reveal-delay:0.15s" id="resultCard">
+          <div class="result-placeholder" id="resultPlaceholder">
+            <div class="placeholder-icon">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4l3 3"/>
+              </svg>
+            </div>
+            <p class="placeholder-text">Enter your details and click <strong>Calculate BMI</strong> to see your results</p>
+          </div>
+
+          <div class="result-content hidden" id="resultContent">
+            <!-- Gauge -->
+            <div class="gauge-container">
+              <svg class="gauge-svg" viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="gaugeUnderweight" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#60a5fa"/>
+                    <stop offset="100%" stop-color="#3b82f6"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeNormal" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#34d399"/>
+                    <stop offset="100%" stop-color="#10b981"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeOverweight" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#fbbf24"/>
+                    <stop offset="100%" stop-color="#f59e0b"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeObese" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#f87171"/>
+                    <stop offset="100%" stop-color="#ef4444"/>
+                  </linearGradient>
+                  <filter id="gaugeShadow">
+                    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.2)"/>
+                  </filter>
+                </defs>
+
+                <!-- Background arcs -->
+                <path d="M 20 115 A 90 90 0 0 1 57.5 36.4" stroke="url(#gaugeUnderweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M 57.5 36.4 A 90 90 0 0 1 110 25" stroke="url(#gaugeNormal)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M 110 25 A 90 90 0 0 1 162.5 36.4" stroke="url(#gaugeOverweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M 162.5 36.4 A 90 90 0 0 1 200 115" stroke="url(#gaugeObese)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+
+                <!-- Active arcs -->
+                <path id="arcUnderweight" d="M 20 115 A 90 90 0 0 1 57.5 36.4" stroke="url(#gaugeUnderweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+                <path id="arcNormal" d="M 57.5 36.4 A 90 90 0 0 1 110 25" stroke="url(#gaugeNormal)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+                <path id="arcOverweight" d="M 110 25 A 90 90 0 0 1 162.5 36.4" stroke="url(#gaugeOverweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+                <path id="arcObese" d="M 162.5 36.4 A 90 90 0 0 1 200 115" stroke="url(#gaugeObese)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+
+                <!-- Needle -->
+                <g id="gaugeNeedle" transform="rotate(0, 110, 115)">
+                  <line x1="110" y1="115" x2="110" y2="40" stroke="var(--foreground)" stroke-width="2.5" stroke-linecap="round" filter="url(#gaugeShadow)"/>
+                  <circle cx="110" cy="115" r="7" fill="var(--foreground)" filter="url(#gaugeShadow)"/>
+                  <circle cx="110" cy="115" r="4" fill="var(--background)"/>
+                </g>
+
+                <!-- BMI Value -->
+                <text id="gaugeBmiValue" x="110" y="95" text-anchor="middle" class="gauge-value-text" font-size="22" font-weight="800" fill="var(--foreground)">–</text>
+                <text x="110" y="108" text-anchor="middle" font-size="9" fill="var(--muted-foreground)" font-weight="500">BMI</text>
+
+                <!-- Labels -->
+                <text x="10" y="128" text-anchor="middle" font-size="8" fill="#3b82f6" font-weight="600">Under</text>
+                <text x="65" y="28" text-anchor="middle" font-size="8" fill="#10b981" font-weight="600">Normal</text>
+                <text x="157" y="28" text-anchor="middle" font-size="8" fill="#f59e0b" font-weight="600">Over</text>
+                <text x="210" y="128" text-anchor="middle" font-size="8" fill="#ef4444" font-weight="600">Obese</text>
+              </svg>
+            </div>
+
+            <!-- Category Badge -->
+            <div class="category-badge-container">
+              <div class="category-badge" id="categoryBadge">
+                <span id="categoryIcon"></span>
+                <span id="categoryText">–</span>
+              </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-label">Your BMI</div>
+                <div class="stat-value" id="statBmi">–</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Healthy Range</div>
+                <div class="stat-value stat-small" id="statRange">18.5–24.9</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Ideal Weight</div>
+                <div class="stat-value stat-small" id="statIdeal">–</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">BMI Prime</div>
+                <div class="stat-value" id="statPrime">–</div>
+              </div>
+            </div>
+
+            <!-- Health message -->
+            <div class="health-message" id="healthMessage"></div>
+
+            <!-- Weight to Lose/Gain -->
+            <div class="weight-diff" id="weightDiff"></div>
+
+            <!-- Calories CTA -->
+            <div class="calories-cta" id="caloriesCta">
+              <div class="cta-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              </div>
+              <div class="cta-body">
+                <p class="cta-title">What about your daily calories?</p>
+                <p class="cta-sub">Find out your TDEE & ideal calorie intake based on your BMI data.</p>
+              </div>
+              <a href="calories.html" class="cta-btn" id="ctaBtn">
+                Calculate
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BMI Table -->
+      <div class="card table-card scroll-reveal" style="--reveal-delay:0.05s" id="tableCard">
+        <h3 class="section-title">BMI Classification Table</h3>
+        <div class="table-wrapper">
+          <table class="bmi-table" id="bmiTable">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>BMI Range</th>
+                <th>Health Risk</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-category="underweight" class="table-row">
+                <td><span class="category-dot" style="background:#3b82f6"></span> Underweight</td>
+                <td>&lt; 18.5</td>
+                <td>Nutritional deficiency</td>
+                <td><span class="risk-badge risk-moderate">Moderate</span></td>
+              </tr>
+              <tr data-category="normal" class="table-row">
+                <td><span class="category-dot" style="background:#10b981"></span> Normal weight</td>
+                <td>18.5 – 24.9</td>
+                <td>Low risk</td>
+                <td><span class="risk-badge risk-low">Low</span></td>
+              </tr>
+              <tr data-category="overweight" class="table-row">
+                <td><span class="category-dot" style="background:#f59e0b"></span> Overweight</td>
+                <td>25.0 – 29.9</td>
+                <td>Increased risk</td>
+                <td><span class="risk-badge risk-elevated">Elevated</span></td>
+              </tr>
+              <tr data-category="obese1" class="table-row">
+                <td><span class="category-dot" style="background:#f97316"></span> Obese (Class I)</td>
+                <td>30.0 – 34.9</td>
+                <td>High risk</td>
+                <td><span class="risk-badge risk-high">High</span></td>
+              </tr>
+              <tr data-category="obese2" class="table-row">
+                <td><span class="category-dot" style="background:#ef4444"></span> Obese (Class II)</td>
+                <td>35.0 – 39.9</td>
+                <td>Very high risk</td>
+                <td><span class="risk-badge risk-very-high">Very High</span></td>
+              </tr>
+              <tr data-category="obese3" class="table-row">
+                <td><span class="category-dot" style="background:#9f1239"></span> Obese (Class III)</td>
+                <td>&ge; 40.0</td>
+                <td>Extremely high risk</td>
+                <td><span class="risk-badge risk-extreme">Extreme</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">What is BMI?</div>
+        <h2 class="section-title-lg">Understanding Body Mass Index</h2>
+        <p class="section-description">BMI is a widely used screening tool that measures body fat based on height and weight. While it doesn't directly measure body fat, it correlates well with more direct measures of body fat.</p>
+      </div>
+
+      <div class="info-grid scroll-reveal" style="--reveal-delay:0.05s">
+        <div class="info-card">
+          <div class="info-icon" style="--icon-color: #6366f1">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <h3 class="info-title">How BMI Works</h3>
+          <p class="info-text">BMI is calculated by dividing your weight in kilograms by the square of your height in meters. The formula: <strong>BMI = kg/m²</strong></p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="--icon-color: #10b981">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="info-title">When to Use BMI</h3>
+          <p class="info-text">BMI is a useful screening tool for adults aged 18-65. It helps identify potential weight issues that could lead to health problems.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="--icon-color: #f59e0b">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <h3 class="info-title">BMI Limitations</h3>
+          <p class="info-text">BMI doesn't account for muscle mass, bone density, or fat distribution. Athletes may have high BMI despite being healthy.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="--icon-color: #ec4899">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3 class="info-title">Beyond BMI</h3>
+          <p class="info-text">For a complete picture, consider waist circumference, body fat percentage, and metabolic health markers alongside BMI.</p>
+        </div>
+      </div>
+
+      <!-- Formula section -->
+      <div class="formula-section scroll-reveal" style="--reveal-delay:0.1s">
+        <h3 class="formula-title">BMI Formula</h3>
+        <div class="formula-cards">
+          <div class="formula-card">
+            <div class="formula-label">Metric</div>
+            <div class="formula-eq">BMI = <span class="formula-frac"><span class="formula-num">weight (kg)</span><span class="formula-den">height² (m²)</span></span></div>
+          </div>
+          <div class="formula-card">
+            <div class="formula-label">Imperial</div>
+            <div class="formula-eq">BMI = <span class="formula-frac"><span class="formula-num">weight (lbs) × 703</span><span class="formula-den">height² (in²)</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BMI Chart Section -->
+  <section id="chart" class="chart-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Visual Guide</div>
+        <h2 class="section-title-lg">BMI Range Chart</h2>
+      </div>
+      <div class="card chart-card scroll-reveal" style="--reveal-delay:0.05s">
+        <div class="bar-chart-container">
+          <div class="bar-chart-labels">
+            <span>10</span><span>15</span><span>18.5</span><span>25</span><span>30</span><span>35</span><span>40</span><span>45</span>
+          </div>
+          <div class="bar-chart">
+            <div class="bar-segment" style="flex:1.7; background: linear-gradient(90deg,#60a5fa,#3b82f6)">
+              <span class="bar-label">Underweight<br/>&lt; 18.5</span>
+            </div>
+            <div class="bar-segment" style="flex:3.2; background: linear-gradient(90deg,#34d399,#10b981)">
+              <span class="bar-label">Normal<br/>18.5–24.9</span>
+            </div>
+            <div class="bar-segment" style="flex:2.5; background: linear-gradient(90deg,#fbbf24,#f59e0b)">
+              <span class="bar-label">Overweight<br/>25–29.9</span>
+            </div>
+            <div class="bar-segment" style="flex:5; background: linear-gradient(90deg,#f87171,#ef4444)">
+              <span class="bar-label">Obese<br/>30+</span>
+            </div>
+          </div>
+          <div id="userBmiMarker" class="bmi-marker hidden">
+            <div class="bmi-marker-line"></div>
+            <div class="bmi-marker-label">You</div>
+          </div>
+        </div>
+
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Underweight (BMI &lt; 18.5)</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#10b981"></span>Normal weight (18.5–24.9)</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>Overweight (25–29.9)</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span>Obese (BMI ≥ 30)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">FAQ</div>
+        <h2 class="section-title-lg">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list scroll-reveal" style="--reveal-delay:0.05s">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            What is a healthy BMI for adults?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>For adults aged 18-65, a BMI between 18.5 and 24.9 is considered healthy. Below 18.5 is underweight, 25–29.9 is overweight, and 30 or above is classified as obese. However, these ranges can vary slightly based on ethnicity and age.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            Is BMI accurate for everyone?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>BMI is a general screening tool and has limitations. It may overestimate body fat in athletes and muscular individuals, and underestimate it in older people. It also doesn't account for differences in body composition related to age, sex, or ethnicity.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How is BMI calculated?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>BMI is calculated by dividing your weight (in kilograms) by the square of your height (in meters). In imperial units: BMI = (weight in pounds × 703) ÷ (height in inches)². For example, a person who is 70 kg and 1.75 m tall has a BMI of 70 ÷ (1.75²) ≈ 22.9.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            What is BMI Prime?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>BMI Prime is the ratio of your actual BMI to the upper limit of the normal BMI range (24.9). A BMI Prime of 1.0 means you're at the upper limit of normal. Below 0.74 is underweight, 0.74–1.0 is normal, and above 1.0 is overweight or obese.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How is ideal body weight calculated?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>This calculator uses the Devine formula. For men: IBW = 50 kg + 2.3 kg per inch over 5 feet. For women: IBW = 45.5 kg + 2.3 kg per inch over 5 feet. The healthy weight range shown corresponds to a BMI of 18.5–24.9.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="logo">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="8" fill="url(#logoGrad2)"/>
+            <path d="M16 7C11.03 7 7 11.03 7 16s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7zm-1 3v5.27l4.5 2.73-.73 1.2L13 18V12h2z" fill="white"/>
+            <defs>
+              <linearGradient id="logoGrad2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="logo-text">BMI<span class="logo-accent">Calc</span></span>
+        </div>
+        <nav class="footer-nav">
+          <a href="index.html" class="footer-link">BMI Calculator</a>
+          <a href="calories.html" class="footer-link">Calories Calculator</a>
+        </nav>
+        <p class="footer-disclaimer">This calculator is for informational purposes only. Always consult a healthcare professional for medical advice.</p>
+        <p class="footer-copy">© 2026 BMICalc. Built with care for your health.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
