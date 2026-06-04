@@ -180,6 +180,15 @@ body {
   border-color: var(--ring);
 }
 
+.mobile-menu-toggle {
+  display: none;
+}
+
+.mobile-menu-toggle line {
+  transition: transform var(--transition), opacity var(--transition);
+  transform-origin: 12px 12px;
+}
+
 /* ─────────────────────────────────────────────
    Hero
    ───────────────────────────────────────────── */
@@ -1583,9 +1592,6 @@ body {
   color: #f97316;
   font-size: 2.5rem;
 }
-
-}
-
 /* Cal result card wrapper */
 .cal-result-card { padding: 2rem; display: flex; flex-direction: column; }
 
@@ -1817,4 +1823,116 @@ body {
 .dark .error-gif-box {
   background-color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ─────────────────────────────────────────────
+   Responsive Overrides
+   ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .logo {
+    margin-right: auto;
+  }
+  
+  .header-inner {
+    gap: 0.5rem;
+    position: relative; /* for absolute nav dropdown */
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--foreground);
+    cursor: pointer;
+    transition: all var(--transition);
+    flex-shrink: 0;
+  }
+  .mobile-menu-toggle:hover {
+    background: var(--muted);
+  }
+
+  .header-nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+    gap: 0.5rem;
+    box-shadow: var(--shadow-lg);
+    z-index: 99;
+  }
+
+  .site-header.mobile-nav-active .header-nav {
+    display: flex;
+    animation: slideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  .site-header.mobile-nav-active .mobile-menu-toggle .line-top {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .site-header.mobile-nav-active .mobile-menu-toggle .line-mid {
+    opacity: 0;
+  }
+  .site-header.mobile-nav-active .mobile-menu-toggle .line-bot {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 0.9375rem;
+  }
+
+  /* Make sure Calories active cta matches layout width */
+  .calories-cta {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 1.25rem 1rem;
+  }
+  .cta-icon {
+    margin: 0 auto;
+  }
+  .cta-btn {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .calc-card, .result-card, .cal-result-card, .table-card {
+    padding: 1.25rem !important;
+  }
+  .hero {
+    padding: 3.5rem 1rem 2.5rem;
+  }
+  .container {
+    padding: 0 1rem;
+  }
+  .bmi-page-header, .cal-page-header {
+    padding: 1rem;
+    border-radius: 10px;
+  }
+  /* Goal selector for Calories page stacks better on small mobile */
+  .goal-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  /* Stats grid stacks better on narrow mobile */
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

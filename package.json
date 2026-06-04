@@ -1,0 +1,19 @@
+{
+  "name": "bmi-calculator",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "deploy": "astro build && wrangler pages deploy dist --project-name=bmi-calculator"
+  },
+  "dependencies": {
+    "astro": "^4.10.2"
+  },
+  "devDependencies": {
+    "wrangler": "^3.57.1"
+  }
+}

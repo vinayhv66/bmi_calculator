@@ -1,26 +1,38 @@
+---
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZYFZY1LY9" is:inline></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-TZYFZY1LY9');
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Page Not Found (404) | BMICalc</title>
   <meta name="description" content="The page you requested was not found. Return to BMICalc to calculate your BMI and daily calorie needs." />
   <meta name="robots" content="noindex, follow" />
-  <link rel="canonical" href="https://bmicalc.io/404.html" />
+  <link rel="canonical" href="https://calbmi.com/404.html" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://bmicalc.io/404.html" />
+  <meta property="og:url" content="https://calbmi.com/404.html" />
   <meta property="og:title" content="Page Not Found (404) | BMICalc" />
   <meta property="og:description" content="The page you requested was not found. Return to BMICalc to calculate your BMI and daily calorie needs." />
-  <meta property="og:image" content="https://bmicalc.io/social-preview.png" />
+  <meta property="og:image" content="https://calbmi.com/social-preview.png" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://bmicalc.io/404.html" />
+  <meta property="twitter:url" content="https://calbmi.com/404.html" />
   <meta property="twitter:title" content="Page Not Found (404) | BMICalc" />
   <meta property="twitter:description" content="The page you requested was not found. Return to BMICalc to calculate your BMI and daily calorie needs." />
-  <meta property="twitter:image" content="https://bmicalc.io/social-preview.png" />
+  <meta property="twitter:image" content="https://calbmi.com/social-preview.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,7 +40,7 @@
   <link rel="stylesheet" href="/style.css" />
 
   <!-- Inline Theme Initialization -->
-  <script>
+  <script is:inline>
     (function initTheme() {
       const saved = localStorage.getItem('bmiTheme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -53,7 +65,7 @@
         <div class="error-content-box">
           <h2 class="error-title-text">Look like you're lost</h2>
           <p class="error-desc-text">The page you are looking for is not available!</p>
-          <a href="/index.html" class="calc-btn" style="text-decoration: none; margin: 0 auto; display: inline-flex; align-items: center; gap: 0.5rem; background: #16a34a; box-shadow: 0 8px 32px rgba(22, 163, 74, 0.25);">
+          <a href="/" class="calc-btn" style="text-decoration: none; margin: 0 auto; display: inline-flex; align-items: center; gap: 0.5rem; background: #16a34a; box-shadow: 0 8px 32px rgba(22, 163, 74, 0.25);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             Go to Home
           </a>
@@ -62,6 +74,6 @@
     </div>
   </main>
 
-  <script src="/shared.js"></script>
+  <script src="/shared.js" is:inline></script>
 </body>
 </html>

@@ -1,98 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daily Calorie & TDEE Calculator - Calculate Daily Caloric Needs | BMICalc</title>
-  <meta name="description" content="Estimate your Total Daily Energy Expenditure (TDEE) and BMR. Discover your daily caloric needs for weight loss, maintenance, or muscle gain with macros." />
-  <meta name="keywords" content="calorie calculator, TDEE calculator, BMR calculator, daily calorie needs, macronutrients, Mifflin-St Jeor, weight goals" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://bmicalc.io/calories.html" />
+---
+import Layout from '../layouts/Layout.astro';
+---
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://bmicalc.io/calories.html" />
-  <meta property="og:title" content="Daily Calorie & TDEE Calculator - Calculate Daily Caloric Needs | BMICalc" />
-  <meta property="og:description" content="Estimate your Total Daily Energy Expenditure (TDEE) and BMR. Discover your daily caloric needs for weight loss, maintenance, or muscle gain with macros." />
-  <meta property="og:image" content="https://bmicalc.io/social-preview.png" />
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://bmicalc.io/calories.html" />
-  <meta property="twitter:title" content="Daily Calorie & TDEE Calculator - Calculate Daily Caloric Needs | BMICalc" />
-  <meta property="twitter:description" content="Estimate your Total Daily Energy Expenditure (TDEE) and BMR. Discover your daily caloric needs for weight loss, maintenance, or muscle gain with macros." />
-  <meta property="twitter:image" content="https://bmicalc.io/social-preview.png" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "BMICalc - Calorie & TDEE Calculator",
-    "url": "https://bmicalc.io/calories.html",
-    "description": "Calculate your Total Daily Energy Expenditure (TDEE), BMR, and daily calorie needs based on Mifflin-St Jeor equation. Includes customizable macronutrient breakdowns.",
-    "applicationCategory": "HealthApplication",
-    "operatingSystem": "All",
-    "browserRequirements": "Requires JavaScript. Requires HTML5.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0.00",
-      "priceCurrency": "USD"
+<Layout
+  title="Daily Calorie & TDEE Calculator - Calculate Daily Caloric Needs | BMICalc"
+  description="Estimate your Total Daily Energy Expenditure (TDEE) and BMR. Discover your daily caloric needs for weight loss, maintenance, or muscle gain with macros."
+  keywords="calorie calculator, TDEE calculator, BMR calculator, daily calorie needs, macronutrients, Mifflin-St Jeor, weight goals"
+  canonicalUrl="https://calbmi.com/calories.html"
+  bodyClass="brand-cal"
+>
+  <Fragment slot="head">
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BMICalc - Calorie & TDEE Calculator",
+      "url": "https://calbmi.com/calories.html",
+      "description": "Calculate your Total Daily Energy Expenditure (TDEE), BMR, and daily calorie needs based on Mifflin-St Jeor equation. Includes customizable macronutrient breakdowns.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      }
     }
-  }
-  </script>
-</head>
-<body class="brand-cal">
+    </script>
+  </Fragment>
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="logo">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="32" height="32" rx="8" fill="url(#calLogoGrad)"/>
-          <path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white" transform="translate(4,2)"/>
-          <defs>
-            <linearGradient id="calLogoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#f97316"/>
-              <stop offset="1" stop-color="#ef4444"/>
-            </linearGradient>
-          </defs>
-        </svg>
-        <span class="logo-text">BMI<span class="logo-accent" style="color:#f97316">Calc</span></span>
-      </a>
-      <nav class="header-nav">
-        <a href="index.html" class="nav-link">BMI Calculator</a>
-        <a href="calories.html" class="nav-link active nav-link-calories" style="--brand-primary:#f97316; background:rgba(249,115,22,0.08); border-color:rgba(249,115,22,0.25); color:#f97316 !important">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-          Calories
-        </a>
-      </nav>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-        <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-        <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      </button>
-    </div>
-  </header>
-
-  <!-- Calculator Section (no hero – straight to the tool) -->
+  <!-- Calculator Section -->
   <section id="cal-calculator" class="calc-section" style="padding-top:2.5rem">
     <div class="container">
 
       <!-- Page heading + back link row -->
       <div class="cal-page-header scroll-reveal">
-        <a href="index.html" class="back-link">
+        <a href="/" class="back-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
           BMI Calculator
         </a>
@@ -106,7 +50,6 @@
       </div>
 
       <div class="calc-grid">
-
         <!-- Input Card -->
         <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
           <div class="card-header">
@@ -127,7 +70,6 @@
           </div>
 
           <form id="calForm" class="bmi-form" novalidate>
-
             <!-- Age -->
             <div class="form-group">
               <label class="form-label" for="calAge">Age <span class="label-hint">(15 – 100)</span></label>
@@ -341,7 +283,6 @@
           </div>
 
           <div class="cal-result-section hidden fade-in-up" id="calResultContent">
-
             <!-- TDEE Hero -->
             <div class="tdee-hero">
               <div class="tdee-label">Your Daily Calorie Need (TDEE)</div>
@@ -391,7 +332,6 @@
 
             <!-- Health tip -->
             <div class="health-message" id="calHealthMsg"></div>
-
           </div>
         </div>
       </div>
@@ -434,41 +374,9 @@
           <p class="info-text">Protein, carbohydrates, and fats each play different roles. A balanced split supports energy levels, muscle maintenance, and hormonal health simultaneously.</p>
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-content">
-        <a href="index.html" class="logo">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="8" fill="url(#calLogoGrad2)"/>
-            <path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white" transform="translate(4,2)"/>
-            <defs>
-              <linearGradient id="calLogoGrad2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#f97316"/>
-                <stop offset="1" stop-color="#ef4444"/>
-              </linearGradient>
-            </defs>
-          </svg>
-          <span class="logo-text">BMI<span class="logo-accent" style="color:#f97316">Calc</span></span>
-        </a>
-        <nav class="footer-nav">
-          <a href="index.html" class="footer-link">BMI Calculator</a>
-          <a href="calories.html" class="footer-link">Calories Calculator</a>
-          <a href="about.html" class="footer-link">About Us</a>
-          <a href="privacy.html" class="footer-link">Privacy Policy</a>
-          <a href="terms.html" class="footer-link">Terms &amp; Conditions</a>
-          <a href="contact.html" class="footer-link">Contact Us</a>
-        </nav>
-        <p class="footer-disclaimer">This calculator provides estimates for informational purposes only. Consult a registered dietitian for personalized nutrition advice.</p>
-        <p class="footer-copy">© 2026 BMICalc. Built with care for your health.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="calories.js"></script>
-</body>
-</html>
+  <!-- Page Script -->
+  <script src="/calories.js" is:inline></script>
+</Layout>

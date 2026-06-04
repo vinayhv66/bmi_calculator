@@ -2,34 +2,7 @@
    Calories Calculator – calories.js
    ================================================= */
 
-// ─── Theme (shared with BMI page) ─────────────
-(function initTheme() {
-  const saved = localStorage.getItem('bmiTheme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (saved === 'dark' || (!saved && prefersDark)) {
-    document.documentElement.classList.add('dark');
-  }
-})();
-
-document.addEventListener('DOMContentLoaded', () => {
-  // Theme toggle
-  const toggleBtn = document.getElementById('themeToggle');
-  const sunIcon   = document.getElementById('sunIcon');
-  const moonIcon  = document.getElementById('moonIcon');
-
-  function applyTheme(dark) {
-    document.documentElement.classList.toggle('dark', dark);
-    sunIcon.style.display  = dark ? 'none'  : 'block';
-    moonIcon.style.display = dark ? 'block' : 'none';
-    localStorage.setItem('bmiTheme', dark ? 'dark' : 'light');
-  }
-
-  applyTheme(document.documentElement.classList.contains('dark'));
-
-  toggleBtn.addEventListener('click', () => {
-    applyTheme(!document.documentElement.classList.contains('dark'));
-  });
-
+function initCalories() {
   // ─── Pre-fill from BMI data ──────────────────
   const bmiRaw = localStorage.getItem('bmiData');
   if (bmiRaw) {
@@ -78,7 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('calResultContent').classList.add('hidden');
     document.getElementById('calPlaceholder').classList.remove('hidden');
   };
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCalories);
+} else {
+  initCalories();
+}
 
 // ─── Pre-fill helper ────────────────────────────
 function prefillFromBmi(d) {

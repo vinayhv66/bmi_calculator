@@ -1,160 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free BMI Calculator Online - Check BMI by Age, Weight, Men & Women | BMICalc</title>
-  <meta name="description" content="Calculate your Body Mass Index instantly with our free BMI calculator online. Get tailored weight results for men, women, and seniors using kg with age." />
-  <meta name="keywords" content="bmi calculator, bmi calculator online, bmi calculator women, bmi calculator men, bmi calculator female, bmi calculator male, bmi calculator kg with age, bmi calculator by age" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://bmicalc.io/" />
+---
+import Layout from '../layouts/Layout.astro';
+---
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://bmicalc.io/" />
-  <meta property="og:title" content="Free BMI Calculator Online - Check BMI by Age, Weight, Men & Women" />
-  <meta property="og:description" content="Calculate your Body Mass Index instantly with our free BMI calculator online. Get tailored weight results for men, women, and seniors using kg with age." />
-  <meta property="og:image" content="https://bmicalc.io/social-preview.png" />
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://bmicalc.io/" />
-  <meta property="twitter:title" content="Free BMI Calculator Online - Check BMI by Age, Weight, Men & Women" />
-  <meta property="twitter:description" content="Calculate your Body Mass Index instantly with our free BMI calculator online. Get tailored weight results for men, women, and seniors using kg with age." />
-  <meta property="twitter:image" content="https://bmicalc.io/social-preview.png" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "BMICalc - Body Mass Index Calculator",
-    "url": "https://bmicalc.io/",
-    "description": "Calculate your Body Mass Index (BMI) instantly. Get personalized health insights, BMI category, ideal weight range, and more.",
-    "applicationCategory": "HealthApplication",
-    "operatingSystem": "All",
-    "browserRequirements": "Requires JavaScript. Requires HTML5.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0.00",
-      "priceCurrency": "USD"
+<Layout 
+  title="Free BMI Calculator Online - Check BMI by Age, Weight, Men & Women | BMICalc"
+  description="Calculate your Body Mass Index instantly with our free BMI calculator online. Get tailored weight results for men, women, and seniors using kg with age."
+  keywords="bmi calculator, bmi calculator online, bmi calculator women, bmi calculator men, bmi calculator female, bmi calculator male, bmi calculator kg with age, bmi calculator by age"
+  canonicalUrl="https://calbmi.com/"
+>
+  <Fragment slot="head">
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BMICalc - Body Mass Index Calculator",
+      "url": "https://calbmi.com/",
+      "description": "Calculate your Body Mass Index (BMI) instantly. Get personalized health insights, BMI category, ideal weight range, and more.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      }
     }
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [{
-      "@type": "Question",
-      "name": "What is a bmi calculator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "<p>A <strong>bmi calculator</strong> (Body Mass Index calculator) is a simple health tool that estimates body fat by dividing your weight by your height squared. It classifies your score into standard ranges: Underweight, Normal weight, Overweight, or Obese.</p>"
-      }
-    }, {
-      "@type": "Question",
-      "name": "What is my bmi calculator and how do I check it?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "<p>To check \"what is my BMI\", you simply need to input your current weight and height into our free <strong>bmi calculator online</strong>. The tool computes your score instantly and tells you which health category you fall under, along with a chart to show where you stand.</p>"
-      }
-    }, {
-      "@type": "Question",
-      "name": "What is my bmi female calculator and how does a women's calculator work?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "<p>A <strong>bmi calculator women</strong> or <strong>bmi calculator female</strong> uses the standard formula <code>weight / height²</code> to compute the index. While the core calculations are identical to men's, interpreting the results for women should account for natural body fat requirements (which are biologically higher in females for hormone regulation) and different ideal weight calculations (Devine formula).</p>"
-      }
-    }, {
-      "@type": "Question",
-      "name": "What is my bmi male calculator and does it differ for men?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "<p>A <strong>bmi calculator male</strong> computes your score using your height and weight. For men, ideal body weight is calculated as <code>50 kg + 2.3 kg</code> per inch over 5 feet. Because men generally possess more skeletal muscle mass than women, the score should be interpreted carefully: highly muscular men may receive an \"overweight\" rating even with very low body fat.</p>"
-      }
-    }, {
-      "@type": "Question",
-      "name": "How does a bmi calculator work and how to calculate it?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "<p>A BMI calculator works by taking your weight in kilograms and dividing it by your height in meters squared (<code>BMI = kg/m²</code>). To figure it in imperial units, multiply weight in pounds by 703 and divide by height in inches squared: <code>BMI = (lbs × 703) / in²</code>. Our <strong>bmi calculator online</strong> performs these steps automatically for you.</p>"
-      }
-    }, {
-      "@type": "Question",
-      "name": "How to use a bmi calculator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "<p>To use this BMI calculator, simply: 1. Choose your preferred unit system (Metric or Imperial). 2. Enter your age (between 2 and 120 years). 3. Select your gender. 4. Enter your height (in cm or feet/inches) and weight (in kg or lbs). 5. Click Calculate BMI to view your score, category, ideal weight, and next-step calorie suggestions.</p>"
-      }
-    }, {
-      "@type": "Question",
-      "name": "Is the bmi calculator accurate and what are its limitations?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "<p>The BMI calculator is a highly accurate tool for screening general health risks across broad populations. However, it is not a direct measurement of body fat percentage. It can be less accurate for athletes (who have dense muscle), pregnant women, children, and elderly individuals who have experienced muscle loss.</p>"
-      }
-    }, {
-      "@type": "Question",
-      "name": "How much should I walk according to my bmi calculator results?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "<p>While a BMI calculator doesn't prescribe exact steps, health guidelines recommend at least 150 minutes of moderate-intensity walking per week (about 20-30 minutes daily or 7,000–10,000 steps per day) for maintaining a normal weight. If your calculator shows you are in the overweight or obese category, gradually increasing your walking duration to 300 minutes per week can support safe, sustainable fat loss.</p>"
-      }
-    }]
-  }
-  </script>
-</head>
-<body>
-  <!-- Header -->
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="logo">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="32" height="32" rx="8" fill="url(#logoGrad)"/>
-          <path d="M16 7C11.03 7 7 11.03 7 16s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7zm-1 3v5.27l4.5 2.73-.73 1.2L13 18V12h2z" fill="white"/>
-          <defs>
-            <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#6366f1"/>
-              <stop offset="1" stop-color="#8b5cf6"/>
-            </linearGradient>
-          </defs>
-        </svg>
-        <span class="logo-text">BMI<span class="logo-accent">Calc</span></span>
-      </div>
-      <nav class="header-nav">
-        <a href="#calculator" class="nav-link active">Calculator</a>
-        <a href="#about" class="nav-link">About BMI</a>
-        <a href="#chart" class="nav-link">BMI Chart</a>
-        <a href="#faq" class="nav-link">FAQ</a>
-        <a href="calories.html" class="nav-link nav-link-calories">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-          Calories
-        </a>
-      </nav>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-        <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-        <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      </button>
-    </div>
-  </header>
+    </script>
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "What is a bmi calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "<p>A <strong>bmi calculator</strong> (Body Mass Index calculator) is a simple health tool that estimates body fat by dividing your weight by your height squared. It classifies your score into standard ranges: Underweight, Normal weight, Overweight, or Obese.</p>"
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is my bmi calculator and how do I check it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "<p>To check \"what is my BMI\", you simply need to input your current weight and height into our free <strong>bmi calculator online</strong>. The tool computes your score instantly and tells you which health category you fall under, along with a chart to show where you stand.</p>"
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is my bmi female calculator and how does a women's calculator work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "<p>A <strong>bmi calculator women</strong> or <strong>bmi calculator female</strong> uses the standard formula <code>weight / height²</code> to compute the index. While the core calculations are identical to men's, interpreting the results for women should account for natural body fat requirements (which are biologically higher in females for hormone regulation) and different ideal weight calculations (Devine formula).</p>"
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is my bmi male calculator and does it differ for men?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "<p>A <strong>bmi calculator male</strong> computes your score using your height and weight. For men, ideal body weight is calculated as <code>50 kg + 2.3 kg</code> per inch over 5 feet. Because men generally possess more skeletal muscle mass than women, the score should be interpreted carefully: highly muscular men may receive an \"overweight\" rating even with very low body fat.</p>"
+        }
+      }, {
+        "@type": "Question",
+        "name": "How does a bmi calculator work and how to calculate it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "<p>A BMI calculator works by taking your weight in kilograms and dividing it by your height in meters squared (<code>BMI = kg/m²</code>). To figure it in imperial units, multiply weight in pounds by 703 and divide by height in inches squared: <code>BMI = (lbs × 703) / in²</code>. Our <strong>bmi calculator online</strong> performs these steps automatically for you.</p>"
+        }
+      }, {
+        "@type": "Question",
+        "name": "How to use a bmi calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "<p>To use this BMI calculator, simply: 1. Choose your preferred unit system (Metric or Imperial). 2. Enter your age (between 2 and 120 years). 3. Select your gender. 4. Enter your height (in cm or feet/inches) and weight (in kg or lbs). 5. Click Calculate BMI to view your score, category, ideal weight, and next-step calorie suggestions.</p>"
+        }
+      }, {
+        "@type": "Question",
+        "name": "Is the bmi calculator accurate and what are its limitations?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "<p>The BMI calculator is a highly accurate tool for screening general health risks across broad populations. However, it is not a direct measurement of body fat percentage. It can be less accurate for athletes (who have dense muscle), pregnant women, children, and elderly individuals who have experienced muscle loss.</p>"
+        }
+      }, {
+        "@type": "Question",
+        "name": "How much should I walk according to my bmi calculator results?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "<p>While a BMI calculator doesn't prescribe exact steps, health guidelines recommend at least 150 minutes of moderate-intensity walking per week (about 20-30 minutes daily or 7,000–10,000 steps per day) for maintaining a normal weight. If your calculator shows you are in the overweight or obese category, gradually increasing your walking duration to 300 minutes per week can support safe, sustainable fat loss.</p>"
+        }
+      }]
+    }
+    </script>
+  </Fragment>
 
-  <!-- Calculator Section (no hero – straight to the tool) -->
+  <!-- Calculator Section -->
   <section id="calculator" class="calc-section" style="padding-top:2.5rem">
     <div class="container">
-
       <!-- Compact page header -->
       <div class="bmi-page-header scroll-reveal">
         <div class="bmi-page-title-block">
@@ -168,7 +108,6 @@
       </div>
 
       <div class="calc-grid">
-
         <!-- Input Card -->
         <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
           <div class="card-header">
@@ -452,7 +391,6 @@
           </table>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -518,7 +456,6 @@
     <div class="container">
       <div class="seo-article-main">
         <h2>The Ultimate Guide to Body Mass Index and Weight Tracking</h2>
-        
         <p>Maintaining a healthy weight is one of the most critical aspects of long-term wellness. A <strong>bmi calculator online</strong> is a quick, accessible, and scientifically backed tool that helps individuals screen their weight relative to their height. Whether you want to understand your general body mass or track specific fitness goals, using an online tool offers instant insights into where your body stands compared to global health standards. With the rise of digital health applications, accessing a reliable <strong>bmi calculator</strong> is easier than ever, enabling people to take charge of their wellness journeys from the comfort of their homes.</p>
         
         <h3>Why Use a BMI Calculator by Age and Weight?</h3>
@@ -672,37 +609,6 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="logo">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="8" fill="url(#logoGrad2)"/>
-            <path d="M16 7C11.03 7 7 11.03 7 16s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7zm-1 3v5.27l4.5 2.73-.73 1.2L13 18V12h2z" fill="white"/>
-            <defs>
-              <linearGradient id="logoGrad2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#6366f1"/>
-                <stop offset="1" stop-color="#8b5cf6"/>
-              </linearGradient>
-            </defs>
-          </svg>
-          <span class="logo-text">BMI<span class="logo-accent">Calc</span></span>
-        </div>
-        <nav class="footer-nav">
-          <a href="index.html" class="footer-link">BMI Calculator</a>
-          <a href="calories.html" class="footer-link">Calories Calculator</a>
-          <a href="about.html" class="footer-link">About Us</a>
-          <a href="privacy.html" class="footer-link">Privacy Policy</a>
-          <a href="terms.html" class="footer-link">Terms &amp; Conditions</a>
-          <a href="contact.html" class="footer-link">Contact Us</a>
-        </nav>
-        <p class="footer-disclaimer">This calculator is for informational purposes only. Always consult a healthcare professional for medical advice.</p>
-        <p class="footer-copy">© 2026 BMICalc. Built with care for your health.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="app.js"></script>
-</body>
-</html>
+  <!-- Page Script -->
+  <script src="/app.js" is:inline></script>
+</Layout>

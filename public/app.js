@@ -2,35 +2,7 @@
    BMI Calculator – app.js
    ================================================= */
 
-// ─── Theme ──────────────────────────────────────
-(function initTheme() {
-  const saved = localStorage.getItem('bmiTheme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (saved === 'dark' || (!saved && prefersDark)) {
-    document.documentElement.classList.add('dark');
-  }
-})();
-
-document.addEventListener('DOMContentLoaded', () => {
-  const toggleBtn = document.getElementById('themeToggle');
-  const sunIcon   = document.getElementById('sunIcon');
-  const moonIcon  = document.getElementById('moonIcon');
-
-  function applyTheme(dark) {
-    document.documentElement.classList.toggle('dark', dark);
-    sunIcon.style.display  = dark ? 'none'  : 'block';
-    moonIcon.style.display = dark ? 'block' : 'none';
-    localStorage.setItem('bmiTheme', dark ? 'dark' : 'light');
-  }
-
-  // Apply initial icon state
-  const isDark = document.documentElement.classList.contains('dark');
-  applyTheme(isDark);
-
-  toggleBtn.addEventListener('click', () => {
-    applyTheme(!document.documentElement.classList.contains('dark'));
-  });
-
+function initApp() {
   // ─── Unit system ──────────────────────────────
   window.setUnit = function(unit) {
     const isMetric = unit === 'metric';
@@ -124,7 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 // ─── Validation ───────────────────────────────
 function isMetric() {

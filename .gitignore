@@ -4,3 +4,7 @@
 .claude/skills/
 .claude/rules/
 .claude/.mcp.json
+node_modules
+dist
+.astro
+.wrangler

@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Privacy Policy - Secure Data Practices | BMICalc"
+  description="Read our privacy policy to understand how BMICalc processes your health measurements safely. We respect your data and do not store info on remote servers."
+  keywords="privacy policy, data safety, secure health calculator, local storage, privacy rights"
+  canonicalUrl="https://calbmi.com/privacy.html"
+>
+  <!-- Main Content -->
+  <main class="container" style="padding-top: 3.5rem; padding-bottom: 5rem;">
+    <div class="section-header scroll-reveal">
+      <div class="section-badge">Privacy Policy</div>
+      <h1 class="section-title-lg">Your Privacy is Our Priority</h1>
+      <p class="section-description" style="max-width: 650px; margin: 0.5rem auto 0;">
+        BMICalc values your data privacy. Learn why our web calculator is completely secure, private, and runs entirely in your web browser.
+      </p>
+    </div>
+
+    <!-- Article layout -->
+    <div class="card scroll-reveal" style="padding: 2.5rem; max-width: 820px; margin: 2rem auto 0;">
+      <div class="seo-article-main" style="margin: 0;">
+        <h2>1. Zero Server-Side Storage</h2>
+        <p>Unlike standard health trackers, BMICalc does not send your personal measurements (like age, gender, height, or weight) to external database servers. All computations are conducted locally in your web browser utilizing client-side JavaScript. This ensures that your information never leaves your personal device.</p>
+        
+        <h2>2. Use of LocalStorage</h2>
+        <p>To enable cross-page calculations (such as auto-filling the daily calories form with your BMI parameters), we use the browser's native <code>localStorage</code> API. This data remains on your physical machine and is accessible only via your browser. You can clear this data at any point simply by purging your browser cookies or database cache.</p>
+        
+        <h2>3. Third-Party Analytics</h2>
+        <p>We may collect anonymized traffic metrics (like pages visited or screen sizes) to improve design responsiveness. No personally identifiable details are collected. We do not run tracker cookies or sell data to advertisers.</p>
+        
+        <h2>4. Contact Information</h2>
+        <p>If you have any questions about this privacy statement, you can reach out via the Contact Us form, and we will get back to you within 7 days.</p>
+      </div>
+    </div>
+  </main>
+</Layout>
