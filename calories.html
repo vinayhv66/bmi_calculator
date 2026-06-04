@@ -3,12 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calorie Calculator – TDEE & Daily Calorie Needs</title>
-  <meta name="description" content="Calculate your Total Daily Energy Expenditure (TDEE), BMR, and ideal calorie intake for your goal. Includes macronutrient breakdown." />
+  <title>Daily Calorie & TDEE Calculator - Calculate Daily Caloric Needs | BMICalc</title>
+  <meta name="description" content="Estimate your Total Daily Energy Expenditure (TDEE) and BMR. Discover your daily caloric needs for weight loss, maintenance, or muscle gain with macros." />
+  <meta name="keywords" content="calorie calculator, TDEE calculator, BMR calculator, daily calorie needs, macronutrients, Mifflin-St Jeor, weight goals" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://bmicalc.io/calories.html" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bmicalc.io/calories.html" />
+  <meta property="og:title" content="Daily Calorie & TDEE Calculator - Calculate Daily Caloric Needs | BMICalc" />
+  <meta property="og:description" content="Estimate your Total Daily Energy Expenditure (TDEE) and BMR. Discover your daily caloric needs for weight loss, maintenance, or muscle gain with macros." />
+  <meta property="og:image" content="https://bmicalc.io/social-preview.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://bmicalc.io/calories.html" />
+  <meta property="twitter:title" content="Daily Calorie & TDEE Calculator - Calculate Daily Caloric Needs | BMICalc" />
+  <meta property="twitter:description" content="Estimate your Total Daily Energy Expenditure (TDEE) and BMR. Discover your daily caloric needs for weight loss, maintenance, or muscle gain with macros." />
+  <meta property="twitter:image" content="https://bmicalc.io/social-preview.png" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "BMICalc - Calorie & TDEE Calculator",
+    "url": "https://bmicalc.io/calories.html",
+    "description": "Calculate your Total Daily Energy Expenditure (TDEE), BMR, and daily calorie needs based on Mifflin-St Jeor equation. Includes customizable macronutrient breakdowns.",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0.00",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 </head>
 <body class="brand-cal">
 
@@ -320,13 +357,13 @@
 
             <!-- Goal Strip -->
             <div>
-              <div class="section-title" style="margin-bottom:0.75rem">All Calorie Targets</div>
+              <h3 class="section-title" style="margin-bottom:0.75rem">All Calorie Targets</h3>
               <div class="goal-strip" id="goalStrip"></div>
             </div>
 
             <!-- Macros -->
             <div class="macro-section">
-              <div class="macro-title">Recommended Macronutrients</div>
+              <h3 class="macro-title">Recommended Macronutrients</h3>
               <div class="macro-bars">
                 <div class="macro-row">
                   <span class="macro-name">Protein</span>
@@ -357,6 +394,13 @@
 
           </div>
         </div>
+      </div>
+
+      <!-- Info Section Header -->
+      <div class="section-header scroll-reveal" style="margin-top: 4.5rem; margin-bottom: 2.5rem;">
+        <div class="section-badge" style="background:rgba(249,115,22,0.1); color:#f97316; border-color:rgba(249,115,22,0.2)">Information</div>
+        <h2 class="section-title-lg">Understanding Caloric &amp; Daily Energy Needs</h2>
+        <p class="section-description" style="max-width:640px; margin:0.5rem auto 0; color:var(--muted-foreground)">Learn the science behind metabolic rates, active energy expenditure, and how to fuel your body effectively for your goals.</p>
       </div>
 
       <!-- Info Cards -->
@@ -414,6 +458,10 @@
         <nav class="footer-nav">
           <a href="index.html" class="footer-link">BMI Calculator</a>
           <a href="calories.html" class="footer-link">Calories Calculator</a>
+          <a href="about.html" class="footer-link">About Us</a>
+          <a href="privacy.html" class="footer-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-link">Terms &amp; Conditions</a>
+          <a href="contact.html" class="footer-link">Contact Us</a>
         </nav>
         <p class="footer-disclaimer">This calculator provides estimates for informational purposes only. Consult a registered dietitian for personalized nutrition advice.</p>
         <p class="footer-copy">© 2026 BMICalc. Built with care for your health.</p>
