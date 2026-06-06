@@ -1,0 +1,491 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Free Lean Body Mass Calculator (2026) – Calculate Your Fat-Free Mass | BMICalc"
+  description="Estimate your Lean Body Mass (LBM) using Boer, James, and Hume equations. Check your Fat-Free Mass Index (FFMI) and muscle mass percentage."
+  keywords="lean body mass calculator, LBM calculator, fat-free mass, FFMI calculator, Boer formula, James formula, Hume formula, body composition calculator"
+  canonicalUrl="https://calbmi.com/lean-body-mass.html"
+  bodyClass="brand-lbm"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BMICalc - Lean Body Mass Calculator",
+      "url": "https://calbmi.com/lean-body-mass.html",
+      "description": "Calculate your Lean Body Mass (LBM) using Boer, James, and Hume formulas. Get your Fat-Free Mass Index (FFMI), fat mass vs. lean mass, and health classification.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" }
+    }
+    </script>
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "What is Lean Body Mass (LBM)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lean Body Mass (LBM) is the total weight of your body minus your body fat weight. It includes the weight of your muscles, bones, organs, blood, skin, water, and other non-fat tissues."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Why is Lean Body Mass important?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "LBM is crucial for metabolic health and physical performance. Because muscle is highly metabolically active, a higher LBM increases your resting metabolic rate (BMR). LBM is also a strong indicator of physical strength, functional longevity, and resilience against injury or disease."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is the Boer, James, and Hume formula difference?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "These are clinical equations developed by medical researchers to estimate LBM based on height and weight. Boer is widely considered the most balanced for the general population. James is also accurate but can show anomalies in severely obese individuals. Hume is highly reliable and frequently used in pharmacology to determine dosing requirements."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is Fat-Free Mass Index (FFMI)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "FFMI is an alternative to BMI that measures muscle mass relative to height, ignoring body fat. This makes it a highly valuable tool for athletes and bodybuilders, as it indicates muscular development and can help estimate genetic muscular limits."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is a healthy Lean Body Mass percentage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A healthy LBM percentage depends on gender and fitness levels. For men, a healthy range is typically 76% to 86% of total body weight (corresponding to 14% to 24% body fat). For women, it is 69% to 79% of total body weight (corresponding to 21% to 31% body fat)."
+        }
+      }, {
+        "@type": "Question",
+        "name": "How do I calculate Lean Body Mass if I know my body fat?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "If you know your body fat percentage, you can calculate LBM directly and with 100% accuracy. The formula is: LBM = Total Body Weight × (1 - (Body Fat % / 100)). For example, if you weigh 80 kg and have 20% body fat: LBM = 80 × 0.80 = 64 kg."
+        }
+      }]
+    }
+    </script>
+  </Fragment>
+
+  <!-- Calculator Section -->
+  <section id="lbm-calculator" class="calc-section" style="padding-top:2.5rem">
+    <div class="container">
+      <!-- Back Link and Title -->
+      <div class="calc-page-header scroll-reveal">
+        <a href="/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          BMI Calculator
+        </a>
+        <div class="calc-page-title-block">
+          <span class="hero-badge hero-badge-brand" style="margin:0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Science-Based
+          </span>
+          <h1 class="calc-page-title">Lean Body Mass <span class="hero-gradient-brand">Calculator</span></h1>
+        </div>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Input Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
+          <div class="card-header">
+            <h2 class="card-title">Body Composition</h2>
+            <p class="card-subtitle">Enter your details to compute lean and fat-free mass</p>
+          </div>
+
+          <!-- Unit Toggle -->
+          <div class="unit-toggle-group" role="group" aria-label="Unit system">
+            <button class="unit-btn active" id="btnMetric" onclick="setUnit('metric')">Metric</button>
+            <button class="unit-btn" id="btnImperial" onclick="setUnit('imperial')">Imperial</button>
+          </div>
+
+          <form id="lbmForm" class="bmi-form" novalidate>
+            <!-- Age -->
+            <div class="form-group">
+              <label class="form-label" for="lbmAge">Age <span class="label-hint">(15 – 100)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                <input class="form-input" type="number" id="lbmAge" placeholder="e.g. 28" min="15" max="100" />
+                <span class="input-unit">yrs</span>
+              </div>
+              <div class="form-error" id="lbmAgeError"></div>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <div class="gender-group">
+                <label class="gender-option">
+                  <input type="radio" name="lbmGender" value="male" id="lbmGenderMale" checked />
+                  <span class="gender-card">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                    Male
+                  </span>
+                </label>
+                <label class="gender-option">
+                  <input type="radio" name="lbmGender" value="female" id="lbmGenderFemale" />
+                  <span class="gender-card">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/><path d="M9 20h6"/></svg>
+                    Female
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Height Metric -->
+            <div class="form-group" id="lbmHeightMetricGroup">
+              <label class="form-label" for="lbmHeightCm">Height</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4 6l3 3M4 12h4M4 18l3-3M20 6l-3 3M20 12h-4M20 18l-3-3"/></svg>
+                <input class="form-input" type="number" id="lbmHeightCm" placeholder="e.g. 175" min="100" max="280" />
+                <span class="input-unit">cm</span>
+              </div>
+              <div class="form-error" id="lbmHeightCmError"></div>
+            </div>
+
+            <!-- Height Imperial -->
+            <div class="form-group hidden" id="lbmHeightImperialGroup">
+              <label class="form-label">Height</label>
+              <div class="imperial-row">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg>
+                  <input class="form-input" type="number" id="lbmHeightFt" placeholder="5" min="1" max="9" />
+                  <span class="input-unit">ft</span>
+                </div>
+                <div class="input-wrapper">
+                  <input class="form-input" type="number" id="lbmHeightIn" placeholder="9" min="0" max="11" />
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-error" id="lbmHeightImperialError"></div>
+            </div>
+
+            <!-- Weight Metric -->
+            <div class="form-group" id="lbmWeightMetricGroup">
+              <label class="form-label" for="lbmWeightKg">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="lbmWeightKg" placeholder="e.g. 70" min="30" max="600" step="0.1" />
+                <span class="input-unit">kg</span>
+              </div>
+              <div class="form-error" id="lbmWeightKgError"></div>
+            </div>
+
+            <!-- Weight Imperial -->
+            <div class="form-group hidden" id="lbmWeightImperialGroup">
+              <label class="form-label" for="lbmWeightLbs">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="lbmWeightLbs" placeholder="e.g. 154" min="66" max="1300" step="0.1" />
+                <span class="input-unit">lbs</span>
+              </div>
+              <div class="form-error" id="lbmWeightLbsError"></div>
+            </div>
+
+            <!-- Body Fat (Optional) -->
+            <div class="form-group">
+              <label class="form-label" for="lbmBodyFat">Body Fat Percentage <span class="label-hint">(Optional, 2% – 60%)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="15.5" cy="15.5" r="1.5"/><line x1="8" y1="16" x2="16" y2="8"/></svg>
+                <input class="form-input" type="number" id="lbmBodyFat" placeholder="e.g. 15" min="2" max="60" step="0.1" />
+                <span class="input-unit">%</span>
+              </div>
+              <div class="form-error" id="lbmBodyFatError"></div>
+            </div>
+
+            <button type="submit" class="calc-btn-brand" id="lbmCalcBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              Calculate LBM
+            </button>
+
+            <button type="button" class="reset-btn" onclick="resetLbmForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.15s" id="lbmResultCard">
+          <!-- Placeholder -->
+          <div class="cal-placeholder" id="lbmPlaceholder">
+            <div class="cal-placeholder-icon" style="background:rgba(20,184,166,0.08);color:#14b8a6">💪</div>
+            <p class="placeholder-text">Enter your details and click <strong>Calculate LBM</strong> to see your lean mass estimation, body fat weight, and FFMI</p>
+          </div>
+
+          <!-- Result Content -->
+          <div class="cal-result-section hidden fade-in-up" id="lbmResultContent">
+            <!-- LBM Hero -->
+            <div class="result-hero">
+              <div class="result-hero-label">Your Lean Body Mass (LBM)</div>
+              <div class="result-hero-value" id="lbmValueDisplay">–</div>
+              <div class="result-hero-unit" id="lbmUnitDisplay">kg</div>
+            </div>
+
+            <!-- Stats Block (LBM % and Fat weight) -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin:1rem 0;">
+              <div class="bmr-info" style="margin:0; justify-content:center; flex-direction:column; align-items:center; text-align:center; padding:0.75rem;">
+                <span class="bmr-info-label" style="font-size:0.75rem;">📈 LBM Percentage</span>
+                <span class="bmr-info-value" id="lbmPctDisplay" style="font-size:1.1rem; margin-top:0.25rem;">–</span>
+              </div>
+              <div class="bmr-info" style="margin:0; justify-content:center; flex-direction:column; align-items:center; text-align:center; padding:0.75rem;">
+                <span class="bmr-info-label" style="font-size:0.75rem;">🍖 Body Fat weight</span>
+                <span class="bmr-info-value" id="lbmFatWeightDisplay" style="font-size:1.1rem; margin-top:0.25rem;">–</span>
+              </div>
+            </div>
+
+            <!-- FFMI Info Block -->
+            <div class="tdee-hero" style="background:rgba(20,184,166,0.06); border:1px solid rgba(20,184,166,0.12); padding:1rem; border-radius:10px; margin-bottom:1.25rem;">
+              <div class="tdee-label" style="color:var(--foreground)">Fat-Free Mass Index (FFMI)</div>
+              <div class="tdee-value" id="lbmFfmiDisplay" style="font-size:1.8rem; margin:0.25rem 0;">–</div>
+              <div class="tdee-unit" id="lbmFfmiDesc" style="font-size:0.8rem; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">–</div>
+            </div>
+
+            <!-- Comparison Table across equations -->
+            <div>
+              <h3 class="section-title" style="margin-bottom:0.5rem">Formula Comparison</h3>
+              <div class="table-wrapper">
+                <table class="comparison-table">
+                  <thead>
+                    <tr>
+                      <th>Formula</th>
+                      <th>LBM Estimate</th>
+                      <th>LBM %</th>
+                    </tr>
+                  </thead>
+                  <tbody id="lbmFormulaBody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Health Message -->
+            <div class="health-message" id="lbmHealthMsg"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Section -->
+      <div class="section-header scroll-reveal" style="margin-top:4.5rem;margin-bottom:2.5rem">
+        <div class="section-badge" style="background:rgba(20,184,166,0.1);color:#14b8a6;border-color:rgba(20,184,166,0.2)">Muscle & Physiology</div>
+        <h2 class="section-title-lg">Understanding Your Lean Body Mass</h2>
+        <p class="section-description" style="max-width:640px;margin:0.5rem auto 0;color:var(--muted-foreground)">Discover what fat-free mass consists of, how FFMI differs from BMI, and natural genetic limits.</p>
+      </div>
+
+      <div class="info-grid scroll-reveal" style="margin-top:1.5rem;--reveal-delay:0.1s">
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(20,184,166,0.1);color:#14b8a6">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-4V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4z"/><circle cx="14" cy="8" r="1"/></svg>
+          </div>
+          <h3 class="info-title">What is LBM?</h3>
+          <p class="info-text">Lean Body Mass is the total weight of your body minus fat tissue. It includes your muscles, vital skeletal bones, essential organs, vascular fluids, skin, and structural water.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(99,102,241,0.1);color:#6366f1">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></svg>
+          </div>
+          <h3 class="info-title">FFMI vs. BMI</h3>
+          <p class="info-text">BMI only looks at total weight and height, misclassifying muscular athletes as obese. FFMI separates muscle from fat, offering a far more precise index of muscular development.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(249,115,22,0.1);color:#f97316">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <h3 class="info-title">Boer, James & Hume</h3>
+          <p class="info-text">These formula systems estimate LBM mathematically from height and weight. If body fat percentage is provided, we skip the estimation and calculate LBM with absolute physical accuracy.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(244,63,94,0.1);color:#f43f5e">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <h3 class="info-title">Muscular Limits</h3>
+          <p class="info-text">For natural males, the genetic ceiling for Normalized FFMI is widely observed to be around 25.0. Levels above 25.0 are rare without chemical enhancement or elite genetic gifts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO Content Guide -->
+  <section class="seo-guide-section scroll-reveal">
+    <div class="container">
+      <div class="seo-article-main">
+        <h2>The Ultimate Guide to Lean Body Mass (LBM) & Fat-Free Mass Index (FFMI)</h2>
+        <p>In fitness, body building, and health assessments, total weight on the scale only tells a small fraction of the story. If you weigh 90 kilograms, that number does not reveal if you are a highly conditioned bodybuilder or someone carrying excessive visceral fat. To understand your true health profile, you must determine your **Lean Body Mass (LBM)**. Lean Body Mass, also termed Fat-Free Mass, represents the weight of everything in your body except for adipose (fat) tissue. It is the cumulative weight of your muscles, skeleton, internal organs, skin, blood, and hydration fluids. This lean body mass calculator utilizes three clinically validated anthropometric estimation systems—the Boer formula, the James formula, and the Hume formula—while also providing a direct calculation if your body fat percentage is known.</p>
+
+        <h3>Why Understanding LBM is Vital for Health and Fitness</h3>
+        <p>Tracking your LBM rather than just scale weight offers several major biological and physiological advantages:</p>
+        <ul>
+          <li><strong>Accurate Metabolic Baseline:</strong> Your Basal Metabolic Rate (BMR) is directly dictated by your LBM. Muscle tissue requires roughly three times more calories to maintain at rest than fat tissue. Knowing your LBM allows you to compute your daily calorie needs with far greater precision.</li>
+          <li><strong>Preserving Muscle During Dieting:</strong> When losing weight, the goal is to lose fat, not muscle. By tracking LBM over time, you can verify if your caloric deficit is causing muscle wasting. If your scale weight goes down but your LBM remains stable, you are successfully losing body fat.</li>
+          <li><strong>Dosage and Medical Applications:</strong> In clinical settings, anesthesiologists and pharmacists often use LBM instead of total body weight to calculate drug dosages, as fat tissue processes certain medications differently than lean muscle tissue.</li>
+        </ul>
+
+        <h3>FFMI (Fat-Free Mass Index) Explained</h3>
+        <p>The **Fat-Free Mass Index (FFMI)** is a powerful body composition metric. While the Body Mass Index (BMI) is notorious for classifying heavily muscled athletes, bodybuilders, and rugby players as "overweight" or "obese," FFMI circumvents this problem. FFMI measures your muscular development relative to your height while ignoring body fat entirely. The formula for FFMI is:</p>
+        <p><code>FFMI = LBM (in kg) / (Height in meters)²</code></p>
+        <p>To ensure fairer comparisons across heights, researchers normalized FFMI to a standard 1.8-meter height using the equation:</p>
+        <p><code>Normalized FFMI = FFMI + 6.1 × (1.8 - Height in meters)</code></p>
+
+        <h3>Understanding FFMI Classifications</h3>
+        <p>Based on studies of natural athletes and those using androgenic anabolic steroids, researchers have established standard FFMI categories:</p>
+        <h4>For Men:</h4>
+        <ul>
+          <li><strong>16.0 – 17.9:</strong> Below average muscle mass.</li>
+          <li><strong>18.0 – 19.9:</strong> Average muscular development (typical of untrained individuals).</li>
+          <li><strong>20.0 – 21.9:</strong> Above average muscle mass (typical of recreational lifters).</li>
+          <li><strong>22.0 – 24.9:</strong> Excellent muscle mass (typical of competitive natural bodybuilders).</li>
+          <li><strong>25.0 – 27.9:</strong> Natural genetic limit. Extremely rare to achieve or maintain without performance-enhancing substances.</li>
+          <li><strong>28.0+:</strong> Highly indicative of external pharmacological support (steroid use).</li>
+        </ul>
+        <h4>For Women:</h4>
+        <ul>
+          <li><strong>13.0 – 14.9:</strong> Below average muscle mass.</li>
+          <li><strong>15.0 – 16.9:</strong> Average muscular development.</li>
+          <li><strong>17.0 – 18.9:</strong> Above average muscle mass.</li>
+          <li><strong>19.0 – 21.9:</strong> Excellent muscle mass (elite natural athletes).</li>
+          <li><strong>22.0+:</strong> Highly muscular (typically requires pharmacological support).</li>
+        </ul>
+
+        <h3>Comparison of LBM Formulas</h3>
+        <p>This calculator compares three mathematical models to estimate lean mass from standard measurements:</p>
+        
+        <h4>1. The Boer Formula</h4>
+        <p>Developed in 1984, the Boer formula is a widely accepted clinical standard. It is highly balanced and performs consistently across a broad range of heights and weights.</p>
+        <ul>
+          <li><strong>Men:</strong> LBM = 0.407 × weight (kg) + 0.267 × height (cm) - 19.2</li>
+          <li><strong>Women:</strong> LBM = 0.252 × weight (kg) + 0.473 × height (cm) - 48.3</li>
+        </ul>
+
+        <h4>2. The James Formula</h4>
+        <p>Developed in 1976, the James formula is another highly regarded equation. However, medical professionals note that the James formula can under-predict LBM in individuals with severe obesity, as it features a quadratic subtraction term.</p>
+        <ul>
+          <li><strong>Men:</strong> LBM = 1.1 × weight (kg) - 128 × (weight / height in cm)²</li>
+          <li><strong>Women:</strong> LBM = 1.07 × weight (kg) - 148 × (weight / height in cm)²</li>
+        </ul>
+
+        <h4>3. The Hume Formula</h4>
+        <p>Developed in 1966, the Hume formula is particularly famous in pharmacology for calculating medication dosages. It shares similar inputs but scales height slightly differently.</p>
+        <ul>
+          <li><strong>Men:</strong> LBM = 0.32810 × weight (kg) + 0.33929 × height (cm) - 29.5336</li>
+          <li><strong>Women:</strong> LBM = 0.29569 × weight (kg) + 0.41813 × height (cm) - 43.2933</li>
+        </ul>
+
+        <h3>How to Increase Your Lean Body Mass</h3>
+        <p>Building lean mass requires a two-pronged strategy: resistance training and proper nutrition. You must engage in progressive overload strength training (lifting weights, calisthenics) at least 3–4 times per week to stimulate muscle protein synthesis. Nutritionally, you must consume adequate protein to rebuild muscle fibers. Aim for **1.6 to 2.2 grams of protein per kilogram of body weight** (0.7 to 1.0g per lb). Eating in a small caloric surplus (250–500 calories above maintenance TDEE) supports muscular hypertrophy while keeping fat gain to a minimum. For comprehensive health metrics, you can combine this calculator's results with our <a href="/">BMI Calculator</a>, assess resting caloric requirements with the <a href="/bmr.html">BMR Calculator</a>, or estimate your absolute body fat levels with the <a href="/body-fat.html">Body Fat Calculator</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge" style="background:rgba(20,184,166,0.1);color:#14b8a6;border-color:rgba(20,184,166,0.2)">FAQ</div>
+        <h2 class="section-title-lg">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list scroll-reveal" style="--reveal-delay:0.05s">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            What is Lean Body Mass (LBM)?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Lean Body Mass (LBM) is your total body weight minus your fat tissue weight. It includes your muscles, skeleton, internal organs, skin, water, and blood. Essentially, it is everything in your body that is not fat.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            Is Lean Body Mass the same as muscle mass?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>No, they are different. Muscle mass represents specifically your skeletal muscle tissue. Lean Body Mass includes muscle mass, but it also includes the weight of your bones, organs, blood, skin, and water. Therefore, LBM is always higher than muscle mass alone.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            What is a good Lean Body Mass percentage?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>For adult men, an LBM percentage of 76% to 86% of total weight is typical and healthy (corresponding to 14% to 24% body fat). For women, an LBM percentage of 69% to 79% is considered healthy (corresponding to 21% to 31% body fat). Athletic individuals will have higher percentages.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How does the calculator estimate LBM without body fat?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>When body fat is not provided, the calculator uses the Boer, James, and Hume formulas. These formulas estimate lean mass based on clinical statistical correlations between height, weight, and gender in the general population. Entering your body fat % bypassing these estimations for a exact direct calculation.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            What is FFMI and why is it useful?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>FFMI (Fat-Free Mass Index) measures your lean muscle mass relative to your height, completely ignoring your body fat percentage. It is an excellent metric for athletes and lifters because it accurately tracks muscular development, unlike BMI, which frequently misclassifies athletic individuals as overweight.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How can I improve my Lean Body Mass?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>To increase LBM, you should perform regular strength training (such as lifting weights or resistance bands) combined with a high-protein diet. Consuming 1.6 to 2.2 grams of protein per kilogram of body weight provides your muscles with the amino acids needed to grow and repair.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Calculators -->
+  <section class="related-calcs-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Explore More</div>
+        <h2 class="section-title-lg">Related Calculators</h2>
+      </div>
+      <div class="related-calcs-grid scroll-reveal" style="--reveal-delay:0.05s">
+        <a href="/" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(99,102,241,0.1)">📊</span>
+          <span class="related-calc-name">BMI Calculator</span>
+          <span class="related-calc-desc">Check your Body Mass Index</span>
+        </a>
+        <a href="/body-fat.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(244,63,94,0.1)">📏</span>
+          <span class="related-calc-name">Body Fat Calculator</span>
+          <span class="related-calc-desc">Estimate body fat percentage</span>
+        </a>
+        <a href="/tdee.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(16,185,129,0.1)">⚡</span>
+          <span class="related-calc-name">TDEE Calculator</span>
+          <span class="related-calc-desc">Total daily energy expenditure</span>
+        </a>
+        <a href="/ideal-weight.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(14,165,233,0.1)">⚖️</span>
+          <span class="related-calc-name">Ideal Weight</span>
+          <span class="related-calc-desc">Find your perfect weight</span>
+        </a>
+        <a href="/bmr.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(245,158,11,0.1)">🫀</span>
+          <span class="related-calc-name">BMR Calculator</span>
+          <span class="related-calc-desc">Basal metabolic rate</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="/lean-body-mass.js" is:inline></script>
+</Layout>

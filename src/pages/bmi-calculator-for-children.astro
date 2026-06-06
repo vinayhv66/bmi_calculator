@@ -1,0 +1,367 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="BMI Calculator for Children & Teens (2026) – Age-Based BMI Percentile"
+  description="Calculate children's BMI with our free online calculator. Get kid-specific BMI percentiles, CDC growth chart definitions, and healthy weight advice for parents."
+  keywords="bmi calculator for children, bmi calculator for kids, bmi percentile, child bmi calculator, teen bmi calculator"
+  canonicalUrl="https://calbmi.com/bmi-calculator-for-children.html"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BMICalc - BMI Calculator for Children",
+      "url": "https://calbmi.com/bmi-calculator-for-children.html",
+      "description": "Calculate Body Mass Index (BMI) and find percentile ranges specifically for children and teens using growth charts.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" }
+    }
+    </script>
+  </Fragment>
+
+  <!-- Calculator Section -->
+  <section id="calculator" class="calc-section" style="padding-top:2.5rem">
+    <div class="container">
+      <div class="bmi-page-header scroll-reveal">
+        <a href="/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          Home
+        </a>
+        <div class="bmi-page-title-block">
+          <span class="hero-badge" style="margin:0">
+            👶 Kids & Teens
+          </span>
+          <h1 class="bmi-page-title">BMI Calculator <span class="hero-gradient">for Children</span></h1>
+        </div>
+        <p class="bmi-page-sub">Analyze your child's Body Mass Index. Valid for ages 2 to 19 years based on CDC standards.</p>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Input Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
+          <div class="card-header">
+            <h2 class="card-title">Enter Child's Details</h2>
+            <p class="card-subtitle">Fill in height and weight measurements</p>
+          </div>
+
+          <!-- Unit Toggle -->
+          <div class="unit-toggle-group" role="group" aria-label="Unit system">
+            <button class="unit-btn active" id="btnMetric" data-unit="metric" onclick="setUnit('metric')">Metric</button>
+            <button class="unit-btn" id="btnImperial" data-unit="imperial" onclick="setUnit('imperial')">Imperial</button>
+          </div>
+
+          <form id="bmiForm" class="bmi-form" novalidate>
+            <!-- Age -->
+            <div class="form-group">
+              <label class="form-label" for="ageInput">Age <span class="label-hint">(2 – 19 years)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                <input class="form-input" type="number" id="ageInput" placeholder="e.g. 10" min="2" max="19" />
+                <span class="input-unit">yrs</span>
+              </div>
+              <div class="form-error" id="ageError"></div>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <div class="gender-group">
+                <label class="gender-option" id="genderMaleLabel">
+                  <input type="radio" name="gender" value="male" id="genderMale" checked />
+                  <span class="gender-card">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                    Boy
+                  </span>
+                </label>
+                <label class="gender-option" id="genderFemaleLabel">
+                  <input type="radio" name="gender" value="female" id="genderFemale" />
+                  <span class="gender-card">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/><path d="M9 20h6"/></svg>
+                    Girl
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Height (Metric) -->
+            <div class="form-group" id="heightMetricGroup">
+              <label class="form-label" for="heightCm">Height</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4 6l3 3M4 12h4M4 18l3-3M20 6l-3 3M20 12h-4M20 18l-3-3"/></svg>
+                <input class="form-input" type="number" id="heightCm" placeholder="e.g. 140" min="50" max="280" />
+                <span class="input-unit">cm</span>
+              </div>
+              <div class="form-error" id="heightCmError"></div>
+            </div>
+
+            <!-- Height (Imperial) -->
+            <div class="form-group hidden" id="heightImperialGroup">
+              <label class="form-label">Height</label>
+              <div class="imperial-row">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg>
+                  <input class="form-input" type="number" id="heightFt" placeholder="4" min="1" max="9" />
+                  <span class="input-unit">ft</span>
+                </div>
+                <div class="input-wrapper">
+                  <input class="form-input" type="number" id="heightIn" placeholder="8" min="0" max="11" />
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-error" id="heightImperialError"></div>
+            </div>
+
+            <!-- Weight (Metric) -->
+            <div class="form-group" id="weightMetricGroup">
+              <label class="form-label" for="weightKg">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="weightKg" placeholder="e.g. 35" min="2" max="600" step="0.1" />
+                <span class="input-unit">kg</span>
+              </div>
+              <div class="form-error" id="weightKgError"></div>
+            </div>
+
+            <!-- Weight (Imperial) -->
+            <div class="form-group hidden" id="weightImperialGroup">
+              <label class="form-label" for="weightLbs">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="weightLbs" placeholder="e.g. 77" min="5" max="1300" step="0.1" />
+                <span class="input-unit">lbs</span>
+              </div>
+              <div class="form-error" id="weightLbsError"></div>
+            </div>
+
+            <button type="submit" class="calc-btn" id="calcBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              Calculate BMI
+            </button>
+
+            <button type="button" class="reset-btn" id="resetBtn" onclick="resetForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card result-card scroll-reveal" style="--reveal-delay:0.15s" id="resultCard">
+          <div class="result-placeholder" id="resultPlaceholder">
+            <div class="placeholder-icon">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4l3 3"/>
+              </svg>
+            </div>
+            <p class="placeholder-text">Enter your details and click <strong>Calculate BMI</strong> to see your results</p>
+          </div>
+
+          <div class="result-content hidden" id="resultContent">
+            <!-- Gauge -->
+            <div class="gauge-container">
+              <svg class="gauge-svg" viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="gaugeUnderweight" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#60a5fa"/>
+                    <stop offset="100%" stop-color="#3b82f6"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeNormal" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#34d399"/>
+                    <stop offset="100%" stop-color="#10b981"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeOverweight" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#fbbf24"/>
+                    <stop offset="100%" stop-color="#f59e0b"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeObese" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#f87171"/>
+                    <stop offset="100%" stop-color="#ef4444"/>
+                  </linearGradient>
+                  <filter id="gaugeShadow">
+                    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.2)"/>
+                  </filter>
+                </defs>
+
+                <!-- Background arcs -->
+                <path d="M 20 115 A 90 90 0 0 1 57.5 36.4" stroke="url(#gaugeUnderweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M 57.5 36.4 A 90 90 0 0 1 110 25" stroke="url(#gaugeNormal)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M 110 25 A 90 90 0 0 1 162.5 36.4" stroke="url(#gaugeOverweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M 162.5 36.4 A 90 90 0 0 1 200 115" stroke="url(#gaugeObese)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+
+                <!-- Active arcs -->
+                <path id="arcUnderweight" d="M 20 115 A 90 90 0 0 1 57.5 36.4" stroke="url(#gaugeUnderweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+                <path id="arcNormal" d="M 57.5 36.4 A 90 90 0 0 1 110 25" stroke="url(#gaugeNormal)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+                <path id="arcOverweight" d="M 110 25 A 90 90 0 0 1 162.5 36.4" stroke="url(#gaugeOverweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+                <path id="arcObese" d="M 162.5 36.4 A 90 90 0 0 1 200 115" stroke="url(#gaugeObese)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+
+                <!-- Needle -->
+                <g id="gaugeNeedle" transform="rotate(0, 110, 115)">
+                  <line x1="110" y1="115" x2="110" y2="40" stroke="var(--foreground)" stroke-width="2.5" stroke-linecap="round" filter="url(#gaugeShadow)"/>
+                  <circle cx="110" cy="115" r="7" fill="var(--foreground)" filter="url(#gaugeShadow)"/>
+                  <circle cx="110" cy="115" r="4" fill="var(--background)"/>
+                </g>
+
+                <!-- BMI Value -->
+                <text id="gaugeBmiValue" x="110" y="95" text-anchor="middle" class="gauge-value-text" font-size="22" font-weight="800" fill="var(--foreground)">–</text>
+                <text x="110" y="108" text-anchor="middle" font-size="9" fill="var(--muted-foreground)" font-weight="500">BMI</text>
+
+                <!-- Labels -->
+                <text x="10" y="128" text-anchor="middle" font-size="8" fill="#3b82f6" font-weight="600">Under</text>
+                <text x="65" y="28" text-anchor="middle" font-size="8" fill="#10b981" font-weight="600">Normal</text>
+                <text x="157" y="28" text-anchor="middle" font-size="8" fill="#f59e0b" font-weight="600">Over</text>
+                <text x="210" y="128" text-anchor="middle" font-size="8" fill="#ef4444" font-weight="600">Obese</text>
+              </svg>
+            </div>
+
+            <!-- Category Badge -->
+            <div class="category-badge-container">
+              <div class="category-badge" id="categoryBadge">
+                <span id="categoryIcon"></span>
+                <span id="categoryText">–</span>
+              </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-label">Child's BMI</div>
+                <div class="stat-value" id="statBmi">–</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Healthy Range</div>
+                <div class="stat-value stat-small" id="statRange">18.5–24.9</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Ideal Weight</div>
+                <div class="stat-value stat-small" id="statIdeal">–</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">BMI Prime</div>
+                <div class="stat-value" id="statPrime">–</div>
+              </div>
+            </div>
+
+            <!-- Health message -->
+            <div class="health-message" id="healthMessage"></div>
+
+            <!-- Weight to Lose/Gain -->
+            <div class="weight-diff" id="weightDiff"></div>
+
+            <!-- Note for Parents -->
+            <div style="background:var(--muted); padding:0.75rem; border-radius:8px; font-size:0.775rem; color:var(--muted-foreground); margin-top:1rem; border-left:3px solid var(--brand-primary)">
+              <strong>Note:</strong> For children aged 2-19 years, BMI is interpreted using CDC age-and-gender percentiles rather than standard adult thresholds. Standard health messages below apply.
+            </div>
+
+            <!-- Calories CTA -->
+            <div class="calories-cta" id="caloriesCta">
+              <div class="cta-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              </div>
+              <div class="cta-body">
+                <p class="cta-title">Daily calories for kids?</p>
+                <p class="cta-sub">Children require energy for active play, brain growth, and physical growth.</p>
+              </div>
+              <a href="calories.html" class="cta-btn" id="ctaBtn">
+                Calculate
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BMI Classification Table -->
+      <div class="card table-card scroll-reveal" style="--reveal-delay:0.05s" id="tableCard">
+        <h3 class="section-title">Children's BMI Percentile Classification</h3>
+        <div class="table-wrapper">
+          <table class="bmi-table" id="bmiTable">
+            <thead>
+              <tr>
+                <th>Percentile Range</th>
+                <th>Category</th>
+                <th>Interpretation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Less than the 5th percentile</td>
+                <td>Underweight</td>
+                <td>Indicates potential nutrient insufficiency or health problems.</td>
+              </tr>
+              <tr>
+                <td>5th percentile to less than the 85th percentile</td>
+                <td>Healthy Weight</td>
+                <td>Associated with optimal growth and development.</td>
+              </tr>
+              <tr>
+                <td>85th percentile to less than the 95th percentile</td>
+                <td>Overweight</td>
+                <td>Shows elevated weight relative to height; warrants growth monitoring.</td>
+              </tr>
+              <tr>
+                <td>95th percentile or greater</td>
+                <td>Obese</td>
+                <td>Significant risk of childhood obesity-related health concerns.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demographic SEO Article -->
+  <section class="landing-article">
+    <div class="container">
+      <div class="landing-article-inner scroll-reveal">
+        <h2>Complete Guide to BMI (Body Mass Index) for Children & Teens</h2>
+        <p>As parents, tracking a child's developmental path is one of the most fundamental tasks of health management. Pediatricians assess children using multiple parameters, including motor milestones, cognitive skills, height velocity, and body composition. For estimating body weight status in kids and teenagers, the **Body Mass Index (BMI)** serves as the primary screening tool. However, **calculating and interpreting BMI for children differs significantly from adults**. Standard adult cutoffs (such as BMI 25 for overweight and 30 for obesity) do not apply to developing bodies. This guide outlines how childhood BMI is calculated, the CDC growth percentile charts, and how to understand weight metrics for kids.</p>
+
+        <h3>How Children's BMI is Calculated and Why Percentiles Matter</h3>
+        <p>The mathematical equation to calculate a child's BMI score is the same as for adults: weight in kilograms divided by height in meters squared (<code>BMI = kg/m²</code>). However, because children's body composition changes constantly as they grow—and because boys and girls develop at different rates—the resulting score cannot be interpreted as a flat number.</p>
+        <p>Instead, pediatricians map a child's BMI score onto **Age-and-Gender Growth Charts** created by the Center for Disease Control (CDC) or World Health Organization (WHO). These charts yield a **percentile rank**. The percentile shows how the child's BMI compares to a large, national reference group of children of the exact same age and gender. For example, if a 10-year-old boy is in the **75th percentile**, it means his BMI is higher than 75% of 10-year-old boys and lower than 25% of them. This represents a normal, healthy weight.</p>
+
+        <h3>Childhood BMI Percentile Categories</h3>
+        <p>The CDC classifies childhood weight status into four distinct percentile categories for children and teens aged 2 to 19:</p>
+        
+        <h4>1. Underweight (Percentile &lt; 5th)</h4>
+        <p>An underweight rating means the child's BMI is lower than 95% of their peers. It can suggest insufficient caloric intake, nutritional malabsorption, or chronic health issues. Underweight children can face delayed puberty, poor bone mineralization, vulnerability to infections, and difficulty concentrating in school due to nutrient deficiencies. Parents of underweight children should consult a pediatrician to identify the root cause.</p>
+
+        <h4>2. Healthy Weight (Percentile 5th to &lt; 85th)</h4>
+        <p>This is the optimal developmental range, indicating that the child's height and weight are progressing in a balanced, healthy ratio. Within this category, children have the lowest risk of developing cardiovascular precursors or physical limitations. Maintaining a healthy weight is supported by encouraging daily active play, limiting screen time, and offering a variety of whole foods.</p>
+
+        <h4>3. Overweight (Percentile 85th to &lt; 95th)</h4>
+        <p>An overweight classification shows that a child has a higher weight relative to height than 85% of peers. While children's heights can experience sudden growth spurts that normalize their BMI, entering this range consistently suggests that a child is storing excess body fat. Overweight children are at higher risk of developing early high blood pressure, cholesterol abnormalities, and social difficulties.</p>
+
+        <h4>4. Obese (Percentile &ge; 95th)</h4>
+        <p>A percentile of 95 or higher is classified as childhood obesity. Childhood obesity raises the risk of severe health conditions. Obese children can develop insulin resistance (Type 2 diabetes), non-alcoholic fatty liver disease (NAFLD), early sleep apnea, asthma, and joint pain in the lower limbs due to increased skeletal load. Early lifestyle interventions that focus on the entire family are crucial for reversing this trend.</p>
+
+        <h3>Biological Differences: Boys vs. Girls</h3>
+        <p>Children's growth charts are strictly separated by gender because boys and girls experience different skeletal and hormonal growth velocities:</p>
+        <ul>
+          <li><strong>Body Fat Accumulation:</strong> Girls naturally accumulate more fat tissue during puberty (starting around age 9 to 11) to prepare for reproductive maturity. Boys tend to accumulate lean muscle mass and experience greater skeletal widening (broad shoulders) under the influence of testosterone.</li>
+          <li><strong>Growth Timings:</strong> Girls typically experience their pubertal growth spurt earlier than boys (usually peaking between ages 11 and 13), whereas boys experience their spurt later (peaking between ages 13 and 15). A growth chart accounts for these timing differences.</li>
+        </ul>
+
+        <h3>Practical Advice for Parents</h3>
+        <p>If your child's BMI results fall outside the normal percentile range, it is essential to handle the situation with care and empathy:</p>
+        <ul>
+          <li><strong>Avoid Weight-Stigmatizing Language:</strong> Focus on health, strength, and energy levels rather than scale numbers or appearance. Never put a child on a restrictive diet without direct medical supervision.</li>
+          <li><strong>Encourage Active Play:</strong> Children need at least **60 minutes of physical activity daily**. Focus on fun activities like riding bikes, playing tag, swimming, or dancing.</li>
+          <li><strong>Focus on Family Habits:</strong> Children model their parents' behavior. Focus on family-wide nutritional changes (such as keeping fresh fruits available, cooking meals together, and reducing sugary beverages) rather than isolating the child.</li>
+        </ul>
+
+        <p>For parents wishing to monitor their own health, check your metabolic requirements with the <a href="/bmr.html">BMR Calculator</a>, calculate daily calorie burn with the <a href="/calories.html">Calorie Calculator</a>, or examine ideal body ratios using the <a href="/lean-body-mass.html">Lean Body Mass Calculator</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Page Script -->
+  <script src="/app.js" is:inline></script>
+</Layout>

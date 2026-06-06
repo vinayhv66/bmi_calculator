@@ -55,6 +55,69 @@ function initShared() {
     });
   }
 
+  // ─── Dropdown Navigation ──────────────────────
+  const dropdowns = document.querySelectorAll('.nav-dropdown');
+
+  dropdowns.forEach(dropdown => {
+    const trigger = dropdown.querySelector('.nav-dropdown-trigger');
+    if (!trigger) return;
+
+    // Desktop: click toggle (works on both desktop and mobile)
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = dropdown.classList.contains('open');
+      
+      // Close all other dropdowns
+      dropdowns.forEach(d => {
+        if (d !== dropdown) d.classList.remove('open');
+      });
+
+      dropdown.classList.toggle('open', !isOpen);
+      trigger.setAttribute('aria-expanded', !isOpen);
+    });
+
+    // Desktop: hover open/close with delay
+    let hoverTimeout;
+
+    dropdown.addEventListener('mouseenter', () => {
+      if (window.innerWidth > 768) {
+        clearTimeout(hoverTimeout);
+        dropdowns.forEach(d => {
+          if (d !== dropdown) d.classList.remove('open');
+        });
+        dropdown.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    dropdown.addEventListener('mouseleave', () => {
+      if (window.innerWidth > 768) {
+        hoverTimeout = setTimeout(() => {
+          dropdown.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+        }, 200);
+      }
+    });
+  });
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', (e) => {
+    dropdowns.forEach(dropdown => {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+        const trigger = dropdown.querySelector('.nav-dropdown-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  // Close dropdown items on navigation (mobile)
+  document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (siteHeader) siteHeader.classList.remove('mobile-nav-active');
+    });
+  });
+
   // ─── Scroll-Reveal Animation ──────────────────
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -72,4 +135,14 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initShared);
 } else {
   initShared();
+}
+
+// ─── FAQ Toggle (shared across pages) ────────────
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const answer = item.querySelector('.faq-answer');
+  const expanded = btn.getAttribute('aria-expanded') === 'true';
+
+  btn.setAttribute('aria-expanded', !expanded);
+  answer.classList.toggle('open', !expanded);
 }

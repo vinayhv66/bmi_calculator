@@ -84,14 +84,69 @@ const { title, description, keywords, canonicalUrl, showFooter = true, bodyClass
         </a>
       </div>
       <nav class="header-nav">
-        <a href="/#calculator" class="nav-link">Calculator</a>
-        <a href="/#about" class="nav-link">About BMI</a>
+        <a href="/" class="nav-link">BMI Calculator</a>
+
+        <!-- Calculators Dropdown -->
+        <div class="nav-dropdown" id="calcDropdown">
+          <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">
+            Calculators
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="/calories.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(249,115,22,0.1);color:#f97316">🔥</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">Calorie Calculator</span>
+                <span class="nav-dropdown-item-desc">Daily caloric needs & macros</span>
+              </span>
+            </a>
+            <a href="/tdee.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(16,185,129,0.1);color:#10b981">⚡</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">TDEE Calculator</span>
+                <span class="nav-dropdown-item-desc">Total daily energy expenditure</span>
+              </span>
+            </a>
+            <a href="/ideal-weight.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(14,165,233,0.1);color:#0ea5e9">⚖️</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">Ideal Weight Calculator</span>
+                <span class="nav-dropdown-item-desc">Find your perfect body weight</span>
+              </span>
+            </a>
+            <a href="/body-fat.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(244,63,94,0.1);color:#f43f5e">📏</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">Body Fat Calculator</span>
+                <span class="nav-dropdown-item-desc">Estimate body fat percentage</span>
+              </span>
+            </a>
+            <a href="/bmr.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b">🫀</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">BMR Calculator</span>
+                <span class="nav-dropdown-item-desc">Basal metabolic rate</span>
+              </span>
+            </a>
+            <a href="/lean-body-mass.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(20,184,166,0.1);color:#14b8a6">💪</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">Lean Body Mass Calculator</span>
+                <span class="nav-dropdown-item-desc">Fat-free mass estimation</span>
+              </span>
+            </a>
+            <a href="/macro.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6">🥗</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">Macro Calculator</span>
+                <span class="nav-dropdown-item-desc">Protein, carbs & fat split</span>
+              </span>
+            </a>
+          </div>
+        </div>
+
         <a href="/#chart" class="nav-link">BMI Chart</a>
         <a href="/#faq" class="nav-link">FAQ</a>
-        <a href="/calories.html" class="nav-link nav-link-calories">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-          Calories
-        </a>
       </nav>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
         <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -120,30 +175,68 @@ const { title, description, keywords, canonicalUrl, showFooter = true, bodyClass
   {showFooter && (
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-content">
-        <div class="logo">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="8" fill="url(#logoGrad2)"/>
-            <path d="M16 7C11.03 7 7 11.03 7 16s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7zm-1 3v5.27l4.5 2.73-.73 1.2L13 18V12h2z" fill="white"/>
-            <defs>
-              <linearGradient id="logoGrad2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#6366f1"/>
-                <stop offset="1" stop-color="#8b5cf6"/>
-              </linearGradient>
-            </defs>
-          </svg>
-          <span class="logo-text">BMI<span class="logo-accent">Calc</span></span>
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="8" fill="url(#logoGrad2)"/>
+              <path d="M16 7C11.03 7 7 11.03 7 16s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7zm-1 3v5.27l4.5 2.73-.73 1.2L13 18V12h2z" fill="white"/>
+              <defs>
+                <linearGradient id="logoGrad2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#6366f1"/>
+                  <stop offset="1" stop-color="#8b5cf6"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="logo-text">BMI<span class="logo-accent">Calc</span></span>
+          </div>
+          <p class="footer-brand-desc">Free, accurate health calculators based on WHO & CDC standards. Calculate BMI, TDEE, body fat, and more.</p>
         </div>
-        <nav class="footer-nav">
-          <a href="/" class="footer-link">BMI Calculator</a>
-          <a href="/calories.html" class="footer-link">Calories Calculator</a>
-          <a href="/about.html" class="footer-link">About Us</a>
-          <a href="/privacy.html" class="footer-link">Privacy Policy</a>
-          <a href="/terms.html" class="footer-link">Terms & Conditions</a>
-          <a href="/contact.html" class="footer-link">Contact Us</a>
-        </nav>
+
+        <!-- Calculators Column -->
+        <div>
+          <h4 class="footer-col-title">Calculators</h4>
+          <div class="footer-col-links">
+            <a href="/" class="footer-link">BMI Calculator</a>
+            <a href="/calories.html" class="footer-link">Calorie Calculator</a>
+            <a href="/tdee.html" class="footer-link">TDEE Calculator</a>
+            <a href="/ideal-weight.html" class="footer-link">Ideal Weight</a>
+            <a href="/body-fat.html" class="footer-link">Body Fat Calculator</a>
+            <a href="/bmr.html" class="footer-link">BMR Calculator</a>
+            <a href="/lean-body-mass.html" class="footer-link">Lean Body Mass</a>
+            <a href="/macro.html" class="footer-link">Macro Calculator</a>
+          </div>
+        </div>
+
+        <!-- Resources Column -->
+        <div>
+          <h4 class="footer-col-title">Resources</h4>
+          <div class="footer-col-links">
+            <a href="/bmi-calculator-for-men.html" class="footer-link">BMI for Men</a>
+            <a href="/bmi-calculator-for-women.html" class="footer-link">BMI for Women</a>
+            <a href="/bmi-calculator-for-children.html" class="footer-link">BMI for Children</a>
+            <a href="/bmi-calculator-india.html" class="footer-link">BMI Calculator India</a>
+            <a href="/bmi-calculator-by-age.html" class="footer-link">BMI by Age</a>
+            <a href="/bmi-calculator-kg-cm.html" class="footer-link">BMI in kg & cm</a>
+          </div>
+        </div>
+
+        <!-- Company Column -->
+        <div>
+          <h4 class="footer-col-title">Company</h4>
+          <div class="footer-col-links">
+            <a href="/about.html" class="footer-link">About Us</a>
+            <a href="/contact.html" class="footer-link">Contact</a>
+            <a href="/privacy.html" class="footer-link">Privacy Policy</a>
+            <a href="/terms.html" class="footer-link">Terms & Conditions</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
         <p class="footer-disclaimer">This calculator is for informational purposes only. Always consult a healthcare professional for medical advice.</p>
-        <p class="footer-copy">© 2026 BMICalc. Built with care for your health.</p>
+        <p class="footer-copy">&copy; 2026 BMICalc. Built with care for your health.</p>
       </div>
     </div>
   </footer>

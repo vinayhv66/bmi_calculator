@@ -1,0 +1,479 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Free BMR Calculator (2026) – Calculate Basal Metabolic Rate | BMICalc"
+  description="Calculate your Basal Metabolic Rate (BMR) using Mifflin-St Jeor, Harris-Benedict, and Katch-McArdle equations. Estimate resting daily calories and hourly metabolism."
+  keywords="BMR calculator, basal metabolic rate, BMR calculator online, Mifflin-St Jeor, Harris-Benedict, Katch-McArdle, resting calories, metabolism calculator"
+  canonicalUrl="https://calbmi.com/bmr.html"
+  bodyClass="brand-bmr"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BMICalc - BMR Calculator",
+      "url": "https://calbmi.com/bmr.html",
+      "description": "Calculate your Basal Metabolic Rate (BMR) using Mifflin-St Jeor, Harris-Benedict, and Katch-McArdle formulas. Check your resting daily calorie requirement and metabolic rate.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" }
+    }
+    </script>
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "What is Basal Metabolic Rate (BMR)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Basal Metabolic Rate (BMR) is the minimum number of calories your body needs to survive and perform basic life-sustaining functions—such as breathing, blood circulation, cellular production, nutrient processing, and body temperature regulation—when at complete rest in a temperate environment."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is the difference between BMR and TDEE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "BMR represents the energy your body burns solely to stay alive at rest, without any movement. TDEE (Total Daily Energy Expenditure) is your BMR plus all the calories you burn from daily movement, walking, working, eating, and exercise. TDEE is BMR multiplied by an activity level factor."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Which BMR formula is the most accurate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Mifflin-St Jeor equation is widely considered the most accurate formula for the general population. The Revised Harris-Benedict equation is also highly respected but tends to slightly overestimate BMR. For individuals with high muscle mass or low body fat, the Katch-McArdle equation is the most accurate because it calculates resting metabolism based on fat-free mass (Lean Body Mass)."
+        }
+      }, {
+        "@type": "Question",
+        "name": "How does body fat percentage affect BMR?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Muscle tissue is metabolically active, burning about 13 calories per kilogram (6 calories/lb) per day at rest, whereas fat tissue burns only about 4.5 calories per kilogram (2 calories/lb) per day. Therefore, a person with a higher percentage of lean muscle mass will have a higher BMR than a person of the same weight with more body fat."
+        }
+      }, {
+        "@type": "Question",
+        "name": "How can I increase my BMR?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The most effective way to increase your BMR is by building muscle through resistance training (weightlifting, bodyweight exercises). Eating adequate protein also increases metabolic rate temporarily due to the thermic effect of food (TEF), and avoiding extreme calorie restriction prevents metabolic adaptation (starvation mode)."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Does BMR decrease with age?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, BMR naturally declines as you age. This decline is primarily due to the loss of lean muscle mass (sarcopenia) that occurs with aging, as well as changes in hormone levels and physical activity. You can mitigate this decline by maintaining a strength training routine."
+        }
+      }]
+    }
+    </script>
+  </Fragment>
+
+  <!-- Calculator Section -->
+  <section id="bmr-calculator" class="calc-section" style="padding-top:2.5rem">
+    <div class="container">
+      <!-- Back Link and Title -->
+      <div class="calc-page-header scroll-reveal">
+        <a href="/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          BMI Calculator
+        </a>
+        <div class="calc-page-title-block">
+          <span class="hero-badge hero-badge-brand" style="margin:0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Science-Based
+          </span>
+          <h1 class="calc-page-title">BMR <span class="hero-gradient-brand">Calculator</span></h1>
+        </div>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Input Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
+          <div class="card-header">
+            <h2 class="card-title">Resting Metabolism</h2>
+            <p class="card-subtitle">Enter your details to compute Basal Metabolic Rate</p>
+          </div>
+
+          <!-- Unit Toggle -->
+          <div class="unit-toggle-group" role="group" aria-label="Unit system">
+            <button class="unit-btn active" id="btnMetric" onclick="setUnit('metric')">Metric</button>
+            <button class="unit-btn" id="btnImperial" onclick="setUnit('imperial')">Imperial</button>
+          </div>
+
+          <form id="bmrForm" class="bmi-form" novalidate>
+            <!-- Age -->
+            <div class="form-group">
+              <label class="form-label" for="bmrAge">Age <span class="label-hint">(15 – 100)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                <input class="form-input" type="number" id="bmrAge" placeholder="e.g. 28" min="15" max="100" />
+                <span class="input-unit">yrs</span>
+              </div>
+              <div class="form-error" id="bmrAgeError"></div>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <div class="gender-group">
+                <label class="gender-option">
+                  <input type="radio" name="bmrGender" value="male" id="bmrGenderMale" checked />
+                  <span class="gender-card">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                    Male
+                  </span>
+                </label>
+                <label class="gender-option">
+                  <input type="radio" name="bmrGender" value="female" id="bmrGenderFemale" />
+                  <span class="gender-card">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/><path d="M9 20h6"/></svg>
+                    Female
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Height Metric -->
+            <div class="form-group" id="bmrHeightMetricGroup">
+              <label class="form-label" for="bmrHeightCm">Height</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4 6l3 3M4 12h4M4 18l3-3M20 6l-3 3M20 12h-4M20 18l-3-3"/></svg>
+                <input class="form-input" type="number" id="bmrHeightCm" placeholder="e.g. 175" min="100" max="280" />
+                <span class="input-unit">cm</span>
+              </div>
+              <div class="form-error" id="bmrHeightCmError"></div>
+            </div>
+
+            <!-- Height Imperial -->
+            <div class="form-group hidden" id="bmrHeightImperialGroup">
+              <label class="form-label">Height</label>
+              <div class="imperial-row">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg>
+                  <input class="form-input" type="number" id="bmrHeightFt" placeholder="5" min="1" max="9" />
+                  <span class="input-unit">ft</span>
+                </div>
+                <div class="input-wrapper">
+                  <input class="form-input" type="number" id="bmrHeightIn" placeholder="9" min="0" max="11" />
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-error" id="bmrHeightImperialError"></div>
+            </div>
+
+            <!-- Weight Metric -->
+            <div class="form-group" id="bmrWeightMetricGroup">
+              <label class="form-label" for="bmrWeightKg">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="bmrWeightKg" placeholder="e.g. 70" min="30" max="600" step="0.1" />
+                <span class="input-unit">kg</span>
+              </div>
+              <div class="form-error" id="bmrWeightKgError"></div>
+            </div>
+
+            <!-- Weight Imperial -->
+            <div class="form-group hidden" id="bmrWeightImperialGroup">
+              <label class="form-label" for="bmrWeightLbs">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="bmrWeightLbs" placeholder="e.g. 154" min="66" max="1300" step="0.1" />
+                <span class="input-unit">lbs</span>
+              </div>
+              <div class="form-error" id="bmrWeightLbsError"></div>
+            </div>
+
+            <!-- Body Fat (Optional) -->
+            <div class="form-group">
+              <label class="form-label" for="bmrBodyFat">Body Fat Percentage <span class="label-hint">(Optional, 2% – 60%)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="15.5" cy="15.5" r="1.5"/><line x1="8" y1="16" x2="16" y2="8"/></svg>
+                <input class="form-input" type="number" id="bmrBodyFat" placeholder="e.g. 18" min="2" max="60" step="0.1" />
+                <span class="input-unit">%</span>
+              </div>
+              <div class="form-error" id="bmrBodyFatError"></div>
+            </div>
+
+            <button type="submit" class="calc-btn-brand" id="bmrCalcBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              Calculate BMR
+            </button>
+
+            <button type="button" class="reset-btn" onclick="resetBmrForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.15s" id="bmrResultCard">
+          <!-- Placeholder -->
+          <div class="cal-placeholder" id="bmrPlaceholder">
+            <div class="cal-placeholder-icon" style="background:rgba(245,158,11,0.08);color:#f59e0b">🫀</div>
+            <p class="placeholder-text">Enter your details and click <strong>Calculate BMR</strong> to see your basal metabolic rate and daily calorie breakdown</p>
+          </div>
+
+          <!-- Result Content -->
+          <div class="cal-result-section hidden fade-in-up" id="bmrResultContent">
+            <!-- BMR Hero -->
+            <div class="result-hero">
+              <div class="result-hero-label">Your Basal Metabolic Rate (BMR)</div>
+              <div class="result-hero-value" id="bmrValueDisplay">–</div>
+              <div class="result-hero-unit">kcal / day</div>
+            </div>
+
+            <!-- Stats Block (Hourly metabolism & fat-free mass) -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin:1rem 0;">
+              <div class="bmr-info" style="margin:0; justify-content:center; flex-direction:column; align-items:center; text-align:center; padding:0.75rem;">
+                <span class="bmr-info-label" style="font-size:0.75rem;">⚡ Hourly Metabolic Rate</span>
+                <span class="bmr-info-value" id="bmrHourlyValue" style="font-size:1.1rem; margin-top:0.25rem;">–</span>
+              </div>
+              <div class="bmr-info" style="margin:0; justify-content:center; flex-direction:column; align-items:center; text-align:center; padding:0.75rem;">
+                <span class="bmr-info-label" style="font-size:0.75rem;">💪 Lean Body Mass (LBM)</span>
+                <span class="bmr-info-value" id="bmrLbmValue" style="font-size:1.1rem; margin-top:0.25rem;">–</span>
+              </div>
+            </div>
+
+            <!-- Comparison Table across equations -->
+            <div>
+              <h3 class="section-title" style="margin-bottom:0.5rem">Formula Comparison</h3>
+              <div class="table-wrapper">
+                <table class="comparison-table">
+                  <thead>
+                    <tr>
+                      <th>Formula</th>
+                      <th>BMR Estimate</th>
+                      <th>Basis / Focus</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bmrFormulaBody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Activity Level TDEE Table -->
+            <div>
+              <h3 class="section-title" style="margin-bottom:0.5rem">Daily Energy Burn at Each Activity Level</h3>
+              <div class="table-wrapper">
+                <table class="activity-level-table" id="bmrActivityTable">
+                  <!-- Dynamic Rows -->
+                </table>
+              </div>
+            </div>
+
+            <!-- Health Message -->
+            <div class="health-message" id="bmrHealthMsg"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Section -->
+      <div class="section-header scroll-reveal" style="margin-top:4.5rem;margin-bottom:2.5rem">
+        <div class="section-badge" style="background:rgba(245,158,11,0.1);color:#f59e0b;border-color:rgba(245,158,11,0.2)">Science & Physiology</div>
+        <h2 class="section-title-lg">Understanding Your Basal Metabolic Rate</h2>
+        <p class="section-description" style="max-width:640px;margin:0.5rem auto 0;color:var(--muted-foreground)">Learn the biological factors that dictate your BMR and how metabolic equations compare.</p>
+      </div>
+
+      <div class="info-grid scroll-reveal" style="margin-top:1.5rem;--reveal-delay:0.1s">
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3 class="info-title">What is BMR?</h3>
+          <p class="info-text">Your Basal Metabolic Rate is the number of calories your body burns at complete rest to stay alive and fuel basic autonomic processes (breathing, cell division, temperature control).</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(20,184,166,0.1);color:#14b8a6">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          </div>
+          <h3 class="info-title">The Formulas</h3>
+          <p class="info-text">We show Mifflin-St Jeor (standard), Harris-Benedict (revised, best for classic stats), and Katch-McArdle (highly accurate for fit individuals by factoring in lean tissue mass).</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(99,102,241,0.1);color:#6366f1">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <h3 class="info-title">BMR vs. TDEE</h3>
+          <p class="info-text">While BMR is your zero-activity baseline energy expenditure, TDEE (Total Daily Energy Expenditure) adds activity, exercise, and the digestive thermal effect on top of BMR.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(244,63,94,0.1);color:#f43f5e">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <h3 class="info-title">Factors Affecting BMR</h3>
+          <p class="info-text">Muscle mass increases BMR significantly, while aging naturally lowers it. Tall stature, genetics, body temperature, hormonal status (thyroid), and gender also modify it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO Content Guide -->
+  <section class="seo-guide-section scroll-reveal">
+    <div class="container">
+      <div class="seo-article-main">
+        <h2>The Complete Scientific Guide to Basal Metabolic Rate (BMR)</h2>
+        <p>Your <strong>Basal Metabolic Rate (BMR)</strong> represents the physiological energy baseline of your existence. In layman's terms, BMR is the exact amount of daily energy, measured in calories (kilocalories), that your body must burn to maintain life-sustaining autonomic processes while you are completely asleep, motionless, and in a fasted state under a thermoneutral environment. Even if you were to lay in bed completely still for 24 hours without moving a single finger, your heart would still need to pump blood, your kidneys would filter toxins, your lungs would expand, and billions of cells would synthesize proteins. This BMR calculator uses three of the most historically validated and peer-reviewed mathematical equations in clinical nutrition: the Mifflin-St Jeor equation, the Revised Harris-Benedict equation, and the Katch-McArdle formula.</p>
+
+        <h3>BMR vs. TDEE: What is the Difference?</h3>
+        <p>Many fitness enthusiasts confuse Basal Metabolic Rate (BMR) with Total Daily Energy Expenditure (TDEE). Understanding the distinction is vital for accurate diet planning. Think of your BMR as your car's engine idling in park; it burns gasoline just to stay on, but it isn't driving anywhere. Your TDEE is the total fuel consumed once the car is driving down the road. TDEE incorporates your BMR plus three other metabolic variables:</p>
+        <ul>
+          <li><strong>NEAT (Non-Exercise Activity Thermogenesis):</strong> Calories burned walking to your car, standing at a desk, washing dishes, and fidgeting.</li>
+          <li><strong>EAT (Exercise Activity Thermogenesis):</strong> Calories burned during formal exercise, such as weightlifting, running, or cycling.</li>
+          <li><strong>TEF (Thermic Effect of Food):</strong> The energy required to digest, absorb, and metabolize the foods you eat. Protein has the highest TEF, requiring about 20–30% of its caloric value to digest.</li>
+        </ul>
+        <p>In short, <strong>BMR is the base; TDEE is the total.</strong> To calculate TDEE, BMR is multiplied by an activity level factor ranging from 1.2 to 1.9.</p>
+
+        <h3>The Science Behind BMR Equations</h3>
+        <p>This BMR calculator estimates your basal metabolic rate using three different scientific models, each with distinct advantages:</p>
+        
+        <h4>1. The Mifflin-St Jeor Equation</h4>
+        <p>Published in 1990 by MD Mifflin and ST St Jeor, this formula was developed to reflect modern body compositions better than older equations. It has become the gold standard in clinical settings and is recommended by the Academy of Nutrition and Dietetics. It utilizes gender, weight, height, and age to determine resting metabolic needs.</p>
+        <ul>
+          <li><strong>Men:</strong> BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) + 5</li>
+          <li><strong>Women:</strong> BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) - 161</li>
+        </ul>
+
+        <h4>2. The Revised Harris-Benedict Equation</h4>
+        <p>The original Harris-Benedict equation was created in 1918. However, in 1984, researchers Roza and Shizgal updated it using more modern subjects. While highly reliable, the Revised Harris-Benedict formula tends to overestimate BMR slightly, particularly in overweight individuals, but remains very popular in athletic coaching circles.</p>
+        <ul>
+          <li><strong>Men:</strong> BMR = 88.362 + (13.397 × weight in kg) + (4.799 × height in cm) - (5.677 × age in years)</li>
+          <li><strong>Women:</strong> BMR = 447.593 + (9.247 × weight in kg) + (3.098 × height in cm) - (4.330 × age in years)</li>
+        </ul>
+
+        <h4>3. The Katch-McArdle Equation</h4>
+        <p>While the previous equations rely on total body weight, they do not distinguish between fat mass and muscle mass. The Katch-McArdle formula calculates BMR using **Lean Body Mass (LBM)** or Fat-Free Mass. Because muscle tissue is far more metabolically active than fat tissue at rest, this formula is extremely accurate for individuals with low body fat or high muscularity, such as athletes, bodybuilders, and fitness professionals.</p>
+        <ul>
+          <li><strong>BMR (Both Genders):</strong> BMR = 370 + 21.6 × LBM (in kg)</li>
+          <li><em>LBM = Total Weight × (1 - (Body Fat % / 100))</em></li>
+        </ul>
+
+        <h3>Key Factors That Influence Your Resting Metabolism</h3>
+        <p>No two human bodies are identical, and BMR fluctuates based on multiple physiological and environmental variables:</p>
+        <ul>
+          <li><strong>Body Composition:</strong> Muscle tissue burns roughly 13 kcal/kg per day at rest, while fat tissue burns only 4.5 kcal/kg. Increasing muscle mass directly boosts resting metabolism.</li>
+          <li><strong>Age:</strong> BMR declines by roughly 1–2% per decade after age 20, largely due to age-related muscle loss (sarcopenia) and shifting hormones.</li>
+          <li><strong>Genetics and Thyroid Function:</strong> The thyroid gland regulates metabolism via thyroxine secretion. An underactive thyroid (hypothyroidism) slows BMR, while an overactive one (hyperthyroidism) accelerates it.</li>
+          <li><strong>Body Temperature and Climate:</strong> Running a fever increases metabolic rate significantly. Similarly, extremely cold or hot ambient temperatures force the body to work harder to maintain a stable core temperature, raising BMR.</li>
+          <li><strong>Caloric Restriction:</strong> Prolonged, extreme dieting triggers a survival mechanism called adaptive thermogenesis (or metabolic adaptation), where the body decreases BMR to conserve energy.</li>
+        </ul>
+
+        <h3>Practical Application: How to Use BMR to Manage Weight</h3>
+        <p>Your BMR is the foundation of weight management. To lose weight safely, you should calculate your TDEE (BMR multiplied by activity factor) and set a caloric target below it, but **never eat below your BMR without medical supervision**. Restricting intake below BMR deprives organs of energy, resulting in muscle loss, fatigue, hormone dysregulation, and a damaged metabolism. By combining BMR calculations with a modest caloric deficit (eating at 200–500 kcal below TDEE) and resistance training, you can achieve healthy fat loss while preserving metabolic health and precious muscle tissue. For a comprehensive assessment of your healthy weight, you can cross-reference your BMR with our <a href="/">BMI Calculator</a>, plan specific macro distributions with the <a href="/macro.html">Macro Calculator</a>, or determine exact daily target calories using the <a href="/calories.html">Calorie Calculator</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge" style="background:rgba(245,158,11,0.1);color:#f59e0b;border-color:rgba(245,158,11,0.2)">FAQ</div>
+        <h2 class="section-title-lg">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list scroll-reveal" style="--reveal-delay:0.05s">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            What is Basal Metabolic Rate (BMR)?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>BMR is the baseline amount of energy (calories) your body burns to maintain basic, life-sustaining bodily functions like breathing, blood circulation, cellular regeneration, and organ operations when at absolute physical and mental rest.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            What is the difference between BMR and TDEE?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>BMR is your resting metabolic baseline. TDEE (Total Daily Energy Expenditure) is your BMR plus all calories burned through physical activity, standard movements throughout the day, and digestion. TDEE represents your true daily maintenance calories.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            Which BMR formula is the most accurate?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>For the average person, Mifflin-St Jeor is the most accurate and widely used formula in clinical environments. However, for lean, muscular athletes, the Katch-McArdle formula is superior because it uses Lean Body Mass to calculate metabolic rate.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            Should I eat fewer calories than my BMR for weight loss?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>No, you should avoid eating below your BMR. Eating fewer calories than your BMR forces your body to break down muscle tissue for energy and slows down your metabolism (metabolic adaptation), which makes long-term weight management more difficult and can lead to nutrient deficiencies and chronic fatigue.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How can I increase my BMR?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>The best long-term method to increase your BMR is to build lean muscle mass through resistance training. Muscle tissue is metabolically active and burns more calories at rest than body fat. Eating enough protein and maintaining physical activity also keeps your metabolism running efficiently.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            Does age affect BMR?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. BMR naturally declines as you get older, typically by 1% to 2% per decade after early adulthood. This is largely because people tend to lose muscle mass and become less active as they age. Strength training can help combat this age-related metabolic decline.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Calculators -->
+  <section class="related-calcs-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Explore More</div>
+        <h2 class="section-title-lg">Related Calculators</h2>
+      </div>
+      <div class="related-calcs-grid scroll-reveal" style="--reveal-delay:0.05s">
+        <a href="/" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(99,102,241,0.1)">📊</span>
+          <span class="related-calc-name">BMI Calculator</span>
+          <span class="related-calc-desc">Check your Body Mass Index</span>
+        </a>
+        <a href="/calories.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(249,115,22,0.1)">🔥</span>
+          <span class="related-calc-name">Calorie Calculator</span>
+          <span class="related-calc-desc">Daily caloric needs & macros</span>
+        </a>
+        <a href="/tdee.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(16,185,129,0.1)">⚡</span>
+          <span class="related-calc-name">TDEE Calculator</span>
+          <span class="related-calc-desc">Total daily energy expenditure</span>
+        </a>
+        <a href="/ideal-weight.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(14,165,233,0.1)">⚖️</span>
+          <span class="related-calc-name">Ideal Weight</span>
+          <span class="related-calc-desc">Find your perfect weight</span>
+        </a>
+        <a href="/macro.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(139,92,246,0.1)">🥗</span>
+          <span class="related-calc-name">Macro Calculator</span>
+          <span class="related-calc-desc">Protein, carbs & fat split</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="/bmr.js" is:inline></script>
+</Layout>

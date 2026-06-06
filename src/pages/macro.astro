@@ -1,0 +1,621 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Free Macro Calculator (2026) – Calculate Daily Macronutrient Needs | BMICalc"
+  description="Calculate your daily macronutrients (protein, carbs, and fats). Get a personalized macro breakdown based on your weight goals, activity, and dietary preferences."
+  keywords="macro calculator, macronutrient calculator, protein calculator, carb calculator, fat calculator, keto macros, high protein diet, weight loss macros"
+  canonicalUrl="https://calbmi.com/macro.html"
+  bodyClass="brand-macro"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BMICalc - Macro Calculator",
+      "url": "https://calbmi.com/macro.html",
+      "description": "Calculate your daily macronutrient needs (protein, carbohydrates, and fats) based on your weight goals, activity, and custom ratio presets (Balanced, Low Carb, Keto, High Protein).",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" }
+    }
+    </script>
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "What are macronutrients (macros)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Macronutrients, commonly called macros, are the three primary nutrient groups your body needs in large quantities to produce energy and maintain structural integrity. They are Protein (4 calories per gram), Carbohydrates (4 calories per gram), and Fats (9 calories per gram)."
+        }
+      }, {
+        "@type": "Question",
+        "name": "How are daily macro requirements calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "First, the calculator determines your TDEE (Total Daily Energy Expenditure) based on your age, gender, height, weight, activity level, and weight goal. Then, it distributes these daily calories across protein, carbs, and fats based on your chosen ratio preset (e.g. Balanced: 30% protein, 40% carbs, 30% fat), converting calories into grams."
+        }
+      }, {
+        "@type": "Question",
+        "name": "How much protein do I need per day?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A standard recommendation for sedentary adults is 0.8 grams of protein per kilogram of body weight. However, for active individuals, lifters, or those looking to lose weight while preserving muscle, a higher intake of 1.6 to 2.2 grams of protein per kilogram of body weight (0.7 to 1.0g per lb) is recommended."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What macro split is best for weight loss?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For weight loss, a High Protein split (40% protein, 30% carbs, 30% fat) or a Low Carb split (30% protein, 20% carbs, 50% fat) is highly effective. High protein increases satiety and prevents muscle loss, while lower carbs help manage insulin levels and water retention."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is the ketogenic (Keto) macro ratio?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The ketogenic diet is a very high-fat, low-carbohydrate diet. The typical macro split is roughly 70-75% fat, 20% protein, and 5% carbohydrates. This drastic reduction in carbohydrates forces the body to enter a metabolic state called ketosis, burning fat for fuel instead of glucose."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Can I adjust my macros for muscle building?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, building muscle (bulking) requires a caloric surplus (typically 250 to 500 calories above TDEE) combined with a Balanced (30% protein, 40% carbs, 30% fat) or High Protein macro split. The extra carbohydrates fuel intense training sessions, while the protein facilitates muscle repair and growth."
+        }
+      }]
+    }
+    </script>
+  </Fragment>
+
+  <!-- Calculator Section -->
+  <section id="macro-calculator" class="calc-section" style="padding-top:2.5rem">
+    <div class="container">
+      <!-- Back Link and Title -->
+      <div class="calc-page-header scroll-reveal">
+        <a href="/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          BMI Calculator
+        </a>
+        <div class="calc-page-title-block">
+          <span class="hero-badge hero-badge-brand" style="margin:0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Science-Based
+          </span>
+          <h1 class="calc-page-title">Macro <span class="hero-gradient-brand">Calculator</span></h1>
+        </div>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Input Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
+          <div class="card-header">
+            <h2 class="card-title">Daily Nutrition</h2>
+            <p class="card-subtitle">Calculate protein, carb, and fat targets</p>
+          </div>
+
+          <!-- Unit Toggle -->
+          <div class="unit-toggle-group" role="group" aria-label="Unit system">
+            <button class="unit-btn active" id="btnMetric" onclick="setUnit('metric')">Metric</button>
+            <button class="unit-btn" id="btnImperial" onclick="setUnit('imperial')">Imperial</button>
+          </div>
+
+          <form id="macroForm" class="bmi-form" novalidate>
+            <!-- Age -->
+            <div class="form-group">
+              <label class="form-label" for="macroAge">Age <span class="label-hint">(15 – 100)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                <input class="form-input" type="number" id="macroAge" placeholder="e.g. 28" min="15" max="100" />
+                <span class="input-unit">yrs</span>
+              </div>
+              <div class="form-error" id="macroAgeError"></div>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <div class="gender-group">
+                <label class="gender-option">
+                  <input type="radio" name="macroGender" value="male" id="macroGenderMale" checked />
+                  <span class="gender-card">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                    Male
+                  </span>
+                </label>
+                <label class="gender-option">
+                  <input type="radio" name="macroGender" value="female" id="macroGenderFemale" />
+                  <span class="gender-card">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/><path d="M9 20h6"/></svg>
+                    Female
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Height Metric -->
+            <div class="form-group" id="macroHeightMetricGroup">
+              <label class="form-label" for="macroHeightCm">Height</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4 6l3 3M4 12h4M4 18l3-3M20 6l-3 3M20 12h-4M20 18l-3-3"/></svg>
+                <input class="form-input" type="number" id="macroHeightCm" placeholder="e.g. 175" min="100" max="280" />
+                <span class="input-unit">cm</span>
+              </div>
+              <div class="form-error" id="macroHeightCmError"></div>
+            </div>
+
+            <!-- Height Imperial -->
+            <div class="form-group hidden" id="macroHeightImperialGroup">
+              <label class="form-label">Height</label>
+              <div class="imperial-row">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg>
+                  <input class="form-input" type="number" id="macroHeightFt" placeholder="5" min="1" max="9" />
+                  <span class="input-unit">ft</span>
+                </div>
+                <div class="input-wrapper">
+                  <input class="form-input" type="number" id="macroHeightIn" placeholder="9" min="0" max="11" />
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-error" id="macroHeightImperialError"></div>
+            </div>
+
+            <!-- Weight Metric -->
+            <div class="form-group" id="macroWeightMetricGroup">
+              <label class="form-label" for="macroWeightKg">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="macroWeightKg" placeholder="e.g. 70" min="30" max="600" step="0.1" />
+                <span class="input-unit">kg</span>
+              </div>
+              <div class="form-error" id="macroWeightKgError"></div>
+            </div>
+
+            <!-- Weight Imperial -->
+            <div class="form-group hidden" id="macroWeightImperialGroup">
+              <label class="form-label" for="macroWeightLbs">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="macroWeightLbs" placeholder="e.g. 154" min="66" max="1300" step="0.1" />
+                <span class="input-unit">lbs</span>
+              </div>
+              <div class="form-error" id="macroWeightLbsError"></div>
+            </div>
+
+            <!-- Activity Level -->
+            <div class="form-group">
+              <label class="form-label">Activity Level</label>
+              <div class="activity-grid">
+                <label class="activity-option">
+                  <input type="radio" name="macroActivity" value="1.2" id="macroSedentary" checked />
+                  <span class="activity-card">
+                    <span class="activity-dot"></span>
+                    <span class="activity-text">
+                      <span class="activity-name">Sedentary</span>
+                      <span class="activity-desc">Desk job, little exercise</span>
+                    </span>
+                    <span class="activity-mult">×1.2</span>
+                  </span>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="macroActivity" value="1.375" id="macroLight" />
+                  <span class="activity-card">
+                    <span class="activity-dot"></span>
+                    <span class="activity-text">
+                      <span class="activity-name">Lightly Active</span>
+                      <span class="activity-desc">Exercise 1–3 days/week</span>
+                    </span>
+                    <span class="activity-mult">×1.375</span>
+                  </span>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="macroActivity" value="1.55" id="macroModerate" />
+                  <span class="activity-card">
+                    <span class="activity-dot"></span>
+                    <span class="activity-text">
+                      <span class="activity-name">Moderately Active</span>
+                      <span class="activity-desc">Exercise 3–5 days/week</span>
+                    </span>
+                    <span class="activity-mult">×1.55</span>
+                  </span>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="macroActivity" value="1.725" id="macroVery" />
+                  <span class="activity-card">
+                    <span class="activity-dot"></span>
+                    <span class="activity-text">
+                      <span class="activity-name">Very Active</span>
+                      <span class="activity-desc">Hard exercise 6–7 days/week</span>
+                    </span>
+                    <span class="activity-mult">×1.725</span>
+                  </span>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="macroActivity" value="1.9" id="macroSuper" />
+                  <span class="activity-card">
+                    <span class="activity-dot"></span>
+                    <span class="activity-text">
+                      <span class="activity-name">Super Active</span>
+                      <span class="activity-desc">Physical job + hard training</span>
+                    </span>
+                    <span class="activity-mult">×1.9</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Goal -->
+            <div class="form-group">
+              <label class="form-label">Fitness Goal</label>
+              <div class="goal-grid">
+                <label class="goal-option">
+                  <input type="radio" name="macroGoal" value="lose2" id="mGoalLose2" />
+                  <span class="goal-card">
+                    <span class="goal-emoji">📉</span>
+                    Weight Loss<br/><small style="font-weight:400;font-size:0.7rem">−500 kcal/day</small>
+                  </span>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="macroGoal" value="lose1" id="mGoalLose1" />
+                  <span class="goal-card">
+                    <span class="goal-emoji">🔽</span>
+                    Mild Loss<br/><small style="font-weight:400;font-size:0.7rem">−250 kcal/day</small>
+                  </span>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="macroGoal" value="maintain" id="mGoalMaintain" checked />
+                  <span class="goal-card">
+                    <span class="goal-emoji">⚖️</span>
+                    Maintain<br/><small style="font-weight:400;font-size:0.7rem">At TDEE</small>
+                  </span>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="macroGoal" value="gain1" id="mGoalGain1" />
+                  <span class="goal-card">
+                    <span class="goal-emoji">🔼</span>
+                    Lean Bulk<br/><small style="font-weight:400;font-size:0.7rem">+250 kcal/day</small>
+                  </span>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="macroGoal" value="gain2" id="mGoalGain2" />
+                  <span class="goal-card">
+                    <span class="goal-emoji">📈</span>
+                    Gain Muscle<br/><small style="font-weight:400;font-size:0.7rem">+500 kcal/day</small>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Macro Presets -->
+            <div class="form-group">
+              <label class="form-label">Macronutrient Split Presets</label>
+              <div class="macro-preset-grid">
+                <label class="macro-preset-option">
+                  <input type="radio" name="macroPreset" value="balanced" checked />
+                  <span class="macro-preset-card">
+                    ⚖️ Balanced
+                    <span class="macro-preset-ratios">30% P / 40% C / 30% F</span>
+                  </span>
+                </label>
+                <label class="macro-preset-option">
+                  <input type="radio" name="macroPreset" value="highprotein" />
+                  <span class="macro-preset-card">
+                    🥩 High Protein
+                    <span class="macro-preset-ratios">40% P / 30% C / 30% F</span>
+                  </span>
+                </label>
+                <label class="macro-preset-option">
+                  <input type="radio" name="macroPreset" value="lowcarb" />
+                  <span class="macro-preset-card">
+                    🥦 Low Carb
+                    <span class="macro-preset-ratios">30% P / 20% C / 50% F</span>
+                  </span>
+                </label>
+                <label class="macro-preset-option">
+                  <input type="radio" name="macroPreset" value="keto" />
+                  <span class="macro-preset-card">
+                    🥑 Ketogenic
+                    <span class="macro-preset-ratios">20% P / 5% C / 75% F</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="calc-btn-brand" id="macroCalcBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              Calculate Macros
+            </button>
+
+            <button type="button" class="reset-btn" onclick="resetMacroForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.15s" id="macroResultCard">
+          <!-- Placeholder -->
+          <div class="cal-placeholder" id="macroPlaceholder">
+            <div class="cal-placeholder-icon" style="background:rgba(139,92,246,0.08);color:#8b5cf6">🥗</div>
+            <p class="placeholder-text">Enter your details and click <strong>Calculate Macros</strong> to see your daily nutrient breakdown and meal recommendations</p>
+          </div>
+
+          <!-- Result Content -->
+          <div class="cal-result-section hidden fade-in-up" id="macroResultContent">
+            <!-- Calorie Goal Hero -->
+            <div class="result-hero" style="border-bottom: 1px solid var(--border); padding-bottom:1.5rem">
+              <div class="result-hero-label">Your Daily Target Calories</div>
+              <div class="result-hero-value" id="macroCaloriesDisplay">–</div>
+              <div class="result-hero-unit">kcal / day</div>
+              <div style="font-size:0.775rem; color:var(--muted-foreground); margin-top:0.25rem;">
+                TDEE (<span id="macroTdeeDisplay">–</span> kcal) adjusted for your goal
+              </div>
+            </div>
+
+            <!-- Donut Chart -->
+            <div class="donut-container">
+              <svg class="donut-svg" viewBox="0 0 42 42">
+                <!-- Base Circle -->
+                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--border)" stroke-width="4.2"></circle>
+                <!-- Segments (Dynamic) -->
+                <circle id="donutProtein" class="donut-segment" cx="21" cy="21" r="15.915" fill="transparent" stroke="#f43f5e" stroke-width="4.2" stroke-dasharray="0 100" stroke-dashoffset="25"></circle>
+                <circle id="donutCarbs" class="donut-segment" cx="21" cy="21" r="15.915" fill="transparent" stroke="#0ea5e9" stroke-width="4.2" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                <circle id="donutFat" class="donut-segment" cx="21" cy="21" r="15.915" fill="transparent" stroke="#eab308" stroke-width="4.2" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                <!-- Center Text -->
+                <text x="50%" y="55%" class="donut-center-text" dominant-baseline="middle" text-anchor="middle" font-size="3" font-weight="800">
+                  MACROS
+                </text>
+              </svg>
+            </div>
+
+            <!-- Macros Breakdown Display -->
+            <div class="macro-section" style="margin-top:0.5rem">
+              <div class="macro-bars">
+                <!-- Protein Row -->
+                <div class="macro-row">
+                  <span class="macro-name" style="color:#f43f5e; font-weight:700">🥩 Protein</span>
+                  <div class="macro-bar-track"><div class="macro-bar-fill" id="mBarProtein" style="background:#f43f5e"></div></div>
+                  <span class="macro-pct" id="mPctProtein" style="color:#f43f5e">0%</span>
+                  <span class="macro-grams" id="mGProtein" style="font-weight:800; min-width:80px; text-align:right">–</span>
+                </div>
+                <!-- Carbs Row -->
+                <div class="macro-row">
+                  <span class="macro-name" style="color:#0ea5e9; font-weight:700">🍞 Carbs</span>
+                  <div class="macro-bar-track"><div class="macro-bar-fill" id="mBarCarbs" style="background:#0ea5e9"></div></div>
+                  <span class="macro-pct" id="mPctCarbs" style="color:#0ea5e9">0%</span>
+                  <span class="macro-grams" id="mGCarbs" style="font-weight:800; min-width:80px; text-align:right">–</span>
+                </div>
+                <!-- Fat Row -->
+                <div class="macro-row">
+                  <span class="macro-name" style="color:#eab308; font-weight:700">🥑 Fats</span>
+                  <div class="macro-bar-track"><div class="macro-bar-fill" id="mBarFat" style="background:#eab308"></div></div>
+                  <span class="macro-pct" id="mPctFat" style="color:#eab308">0%</span>
+                  <span class="macro-grams" id="mGFat" style="font-weight:800; min-width:80px; text-align:right">–</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Meal Breakdown Card Options -->
+            <div style="margin-top:1.5rem">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem">
+                <h3 class="section-title" style="margin:0">Meal-by-Meal Targets</h3>
+                <select class="form-input" id="mealCountSelect" style="width:auto; padding:0.25rem 0.5rem; font-size:0.8rem; height:auto; margin:0;" onchange="updateMealBreakdown()">
+                  <option value="3">3 Meals / day</option>
+                  <option value="4" selected>4 Meals / day</option>
+                  <option value="5">5 Meals / day</option>
+                </select>
+              </div>
+              <div class="meal-breakdown" id="mealsContainer">
+                <!-- Meal Cards (Dynamic) -->
+              </div>
+            </div>
+
+            <!-- Food suggestions section -->
+            <div style="margin-top:1.5rem">
+              <h3 class="section-title" style="margin-bottom:0.5rem">Recommended Food Sources</h3>
+              <div style="display:grid; grid-template-columns:1fr; gap:0.5rem; font-size:0.825rem">
+                <div style="background:var(--muted); padding:0.75rem; border-radius:8px; border-left:4px solid #f43f5e">
+                  <strong>Protein:</strong> Chicken breast, turkey, lean beef, salmon, eggs, tofu, tempeh, Greek yogurt, whey protein, lentils.
+                </div>
+                <div style="background:var(--muted); padding:0.75rem; border-radius:8px; border-left:4px solid #0ea5e9">
+                  <strong>Carbohydrates:</strong> Oats, brown rice, sweet potatoes, quinoa, whole grain bread, fruits, vegetables, beans.
+                </div>
+                <div style="background:var(--muted); padding:0.75rem; border-radius:8px; border-left:4px solid #eab308">
+                  <strong>Fats:</strong> Avocado, olive oil, almonds, walnuts, chia seeds, flaxseeds, egg yolks, dark chocolate, coconut oil.
+                </div>
+              </div>
+            </div>
+
+            <!-- Health Message -->
+            <div class="health-message" id="macroHealthMsg" style="margin-top:1.25rem"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Section -->
+      <div class="section-header scroll-reveal" style="margin-top:4.5rem;margin-bottom:2.5rem">
+        <div class="section-badge" style="background:rgba(139,92,246,0.1);color:#8b5cf6;border-color:rgba(139,92,246,0.2)">Nutrition & Science</div>
+        <h2 class="section-title-lg">Demystifying Macronutrients</h2>
+        <p class="section-description" style="max-width:640px;margin:0.5rem auto 0;color:var(--muted-foreground)">Understand what protein, carbs, and fats do inside your body and how to balance them.</p>
+      </div>
+
+      <div class="info-grid scroll-reveal" style="margin-top:1.5rem;--reveal-delay:0.1s">
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(244,63,94,0.1);color:#f43f5e">
+            🥩
+          </div>
+          <h3 class="info-title">Protein (4 kcal/g)</h3>
+          <p class="info-text">The building block of cells. Protein is essential for repairing muscular microtears from workouts, maintaining bone structure, synthesizing enzymes, and regulating satiety.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(14,165,233,0.1);color:#0ea5e9">
+            🍞
+          </div>
+          <h3 class="info-title">Carbohydrates (4 kcal/g)</h3>
+          <p class="info-text">Your body's preferred fast fuel. Carbs are converted to glucose, replenishing muscular glycogen stores and providing energy for high-intensity physical activity and brain function.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(234,179,8,0.1);color:#eab308">
+            🥑
+          </div>
+          <h3 class="info-title">Fats (9 kcal/g)</h3>
+          <p class="info-text">Crucial for hormone regulation, vitamin absorption (A, D, E, K), brain cell health, and maintaining core temperature. Fats are a dense, long-lasting energy reserve.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6">
+            ⚖️
+          </div>
+          <h3 class="info-title">Satiety and TEF</h3>
+          <p class="info-text">Protein keeps you full longest because it has the highest Thermic Effect of Food (TEF), burning 20-30% of its calories simply during the digestive process.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO Content Guide -->
+  <section class="seo-guide-section scroll-reveal">
+    <div class="container">
+      <div class="seo-article-main">
+        <h2>The Complete Nutritional Guide to Macronutrients & Custom Ratios</h2>
+        <p>Whether you are trying to sculpt a lean physique, run a marathon, manage insulin levels, or build skeletal muscle, calorie tracking is only half the battle. To optimize energy levels, athletic performance, and body composition, you must look at **macronutrients**. Macronutrients, commonly referred to as "macros," are the primary chemical nutrient groups that your body requires in large daily quantities to sustain life and produce energy. The three main macronutrients are protein, carbohydrates, and dietary fats. This macro calculator determines your daily caloric baseline adjusted for weight targets and maps those calories into targeted macro ratios, detailing the exact grams you need to consume daily.</p>
+
+        <h3>The Three Pillars of Macronutrient Nutrition</h3>
+        <p>To successfully utilize a macro calculator, you must understand the distinct physiological roles that each macro plays in your body:</p>
+        
+        <h4>1. Protein: The Structural Builder (4 Calories per Gram)</h4>
+        <p>Protein is composed of organic compounds called amino acids, which are the building blocks of muscular tissue, organs, skin, hair, and hormones. When you perform resistance training, you create microscopic tears in your muscle fibers. Consuming protein provides the amino acids necessary to repair and grow these fibers, a process called muscle protein synthesis. Beyond building muscle, protein has the highest **satiety value** (keeping you full) and the highest **Thermic Effect of Food (TEF)**. Your body consumes roughly 20% to 30% of the energy in protein simply to digest and process it. A standard active target is **1.6 to 2.2 grams of protein per kilogram of body weight** (0.7 to 1.0g per lb).</p>
+
+        <h4>2. Carbohydrates: The Energy Fuel (4 Calories per Gram)</h4>
+        <p>Carbohydrates are your body's primary and most efficient energy source. When digested, carbohydrates are broken down into glucose, which circulates in the blood to fuel cellular activity, or is stored in the liver and skeletal muscles as glycogen. During high-intensity workouts, your muscles rely heavily on these glycogen stores. Restricting carbohydrates too severely can lead to sluggishness, decreased strength, and mental fatigue. Carbs are typically categorized into **simple carbohydrates** (quick-digesting sugars found in fruits) and **complex carbohydrates** (slow-digesting fibers found in oats, brown rice, and sweet potatoes).</p>
+
+        <h4>3. Dietary Fats: The Hormone Regulator (9 Calories per Gram)</h4>
+        <p>For decades, dietary fats were mistakenly blamed for obesity. Today, sports nutrition science recognizes fats as vital for health. Fats are essential for hormone production (including testosterone and growth hormone), brain function, cell membrane integrity, and the absorption of fat-soluble vitamins (Vitamins A, D, E, and K). Fats are calorie-dense, providing 9 calories per gram, making them an excellent fuel source for low-intensity, endurance exercises. Healthy fat sources include avocados, extra virgin olive oil, nuts, seeds, and fatty fish.</p>
+
+        <h3>Choosing the Right Macro Preset for Your Goal</h3>
+        <p>Our macro calculator offers four popular nutritional split presets, designed to fit different lifestyles and metabolic goals:</p>
+        <ul>
+          <li><strong>⚖️ Balanced Preset (30% Protein / 40% Carbs / 30% Fat):</strong> A highly sustainable, versatile split. It provides plenty of carbohydrates to fuel athletic training, ample protein to maintain or build lean muscle, and healthy fats for hormonal regulation. Ideal for weight maintenance, general fitness, and beginners.</li>
+          <li><strong>🥩 High Protein Preset (40% Protein / 30% Carbs / 30% Fat):</strong> Designed specifically for fat loss and body recomposition. The elevated protein maximizes muscle preservation during a caloric deficit while suppressing hunger cues. This split is excellent for fat loss diets.</li>
+          <li><strong>🥦 Low Carb Preset (30% Protein / 20% Carbs / 50% Fat):</strong> Popular among individuals who want to manage blood sugar fluctuations or find that they feel better and less bloated on lower carbohydrate diets. Fats are increased to supply consistent daily energy.</li>
+          <li><strong>🥑 Ketogenic Preset (20% Protein / 5% Carbs / 75% Fat):</strong> A drastic low-carb approach. By restricting carbohydrates to under 50g per day, the body runs out of glucose and enters a state called **ketosis**, where the liver converts fats into ketones to fuel the brain. High fats are essential here to prevent starvation responses.</li>
+        </ul>
+
+        <h3>Practical Implementation: How to Track and Log Macros</h3>
+        <p>To succeed with a macro-based diet (often called IIFYM—If It Fits Your Macros), consistency is key. We recommend using a digital kitchen scale to weigh food items in grams, as volumetric measurements (cups, spoons) are highly inaccurate. Log your foods in a mobile tracking application. If you eat out, do your best to estimate the ingredients. Remember that macros do not need to be perfect to the single gram every day; aiming to stay within 5–10g of your targets is highly effective. If you are unsure about your baseline stats, use our <a href="/">BMI Calculator</a> to assess weight status, consult our <a href="/calories.html">Calorie Calculator</a> to learn about caloric deficits, or utilize our <a href="/bmr.html">BMR Calculator</a> to check resting metabolic baselines.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge" style="background:rgba(139,92,246,0.1);color:#8b5cf6;border-color:rgba(139,92,246,0.2)">FAQ</div>
+        <h2 class="section-title-lg">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list scroll-reveal" style="--reveal-delay:0.05s">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            What are macros and why should I calculate them?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Macros is short for macronutrients—protein, carbohydrates, and fats. They are the nutrients that supply your body with calories. Calculating your macros ensures you eat the correct ratios of these nutrients to support muscle recovery, maintain high energy levels, and lose fat effectively, rather than just cutting raw calories.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            Which macro split is best for losing body fat?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>For fat loss, a High Protein split (40% protein, 30% carbs, 30% fat) is widely considered optimal. The high protein intake keeps you full and protects your muscles, while the moderate reduction in carbs encourages the body to tap into fat reserves for fuel.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How many calories are in a gram of protein, carb, and fat?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Protein and carbohydrates contain **4 calories per gram** each. Dietary fats contain **9 calories per gram**. This is why high-fat foods are much more calorie-dense and can quickly accumulate total calories if not carefully portioned.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            Can I build muscle on a low-carb or Keto macro split?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Yes, it is possible to build muscle on a ketogenic or low-carb diet, but it is generally less optimal than a balanced or high-carbohydrate split. Carbohydrates replenish glycogen stores, which fuel high-intensity strength training sessions and trigger muscle-building pathways like insulin release.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How does the meal breakdown feature work?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Once your daily macro requirements are calculated, the meal breakdown section takes those total numbers and divides them by your selected meal frequency (3, 4, or 5 meals). This gives you the exact target calories and macro grams to hit at each individual meal, helping you plan your meal portions easily.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            Do I have to hit my macros exactly to get results?
+            <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>No, you do not need to hit your targets perfectly to the gram. Health and composition goals are perfectly fine if you consistently land within +/- 5 to 10 grams of your protein and carb targets, and within +/- 3 to 5 grams of your fat target.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Calculators -->
+  <section class="related-calcs-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Explore More</div>
+        <h2 class="section-title-lg">Related Calculators</h2>
+      </div>
+      <div class="related-calcs-grid scroll-reveal" style="--reveal-delay:0.05s">
+        <a href="/" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(99,102,241,0.1)">📊</span>
+          <span class="related-calc-name">BMI Calculator</span>
+          <span class="related-calc-desc">Check your Body Mass Index</span>
+        </a>
+        <a href="/calories.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(249,115,22,0.1)">🔥</span>
+          <span class="related-calc-name">Calorie Calculator</span>
+          <span class="related-calc-desc">Daily caloric needs & macros</span>
+        </a>
+        <a href="/tdee.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(16,185,129,0.1)">⚡</span>
+          <span class="related-calc-name">TDEE Calculator</span>
+          <span class="related-calc-desc">Total daily energy expenditure</span>
+        </a>
+        <a href="/ideal-weight.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(14,165,233,0.1)">⚖️</span>
+          <span class="related-calc-name">Ideal Weight</span>
+          <span class="related-calc-desc">Find your perfect weight</span>
+        </a>
+        <a href="/bmr.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(245,158,11,0.1)">🫀</span>
+          <span class="related-calc-name">BMR Calculator</span>
+          <span class="related-calc-desc">Basal metabolic rate</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="/macro.js" is:inline></script>
+</Layout>

@@ -1,0 +1,359 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Free Ideal Weight Calculator (2026) – Find Your Perfect Body Weight"
+  description="Calculate your ideal body weight using 4 scientific formulas: Devine, Robinson, Miller, and Hamwi. Compare results and find your healthy weight range instantly."
+  keywords="ideal weight calculator, ideal body weight, healthy weight for height, ideal weight for women, ideal weight for men, Devine formula, Robinson formula"
+  canonicalUrl="https://calbmi.com/ideal-weight.html"
+  bodyClass="brand-ideal"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BMICalc - Ideal Weight Calculator",
+      "url": "https://calbmi.com/ideal-weight.html",
+      "description": "Calculate your ideal body weight using Devine, Robinson, Miller, and Hamwi formulas. Compare results across 4 scientific methods.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" }
+    }
+    </script>
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "What is ideal body weight and how is it determined?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Ideal body weight (IBW) is an estimated weight considered healthiest for a given height. It is determined using medical formulas like Devine, Robinson, Miller, and Hamwi that calculate weight based on height and gender. These formulas were originally developed for drug dosing but are now widely used for general health assessment." }
+      }, {
+        "@type": "Question",
+        "name": "Which ideal weight formula is most accurate?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No single formula is definitively most accurate for all individuals. The Devine formula is most commonly used in clinical settings. The Robinson formula tends to give slightly higher values. Using the average of all four formulas provides the most balanced estimate of ideal weight." }
+      }, {
+        "@type": "Question",
+        "name": "Does frame size affect ideal weight?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. People with larger bone structures naturally weigh more at the same height. A small frame may have an ideal weight 10% below the calculated average, while a large frame may be 10% above. You can estimate frame size by wrapping your thumb and finger around your wrist." }
+      }, {
+        "@type": "Question",
+        "name": "What is the ideal weight for 5 feet 8 inches?",
+        "acceptedAnswer": { "@type": "Answer", "text": "For a male at 5'8\" (173 cm), the ideal weight ranges from approximately 63–72 kg (139–159 lbs) depending on the formula used. For a female at 5'8\", the range is approximately 59–68 kg (130–150 lbs). Frame size can shift these values by ±10%." }
+      }, {
+        "@type": "Question",
+        "name": "Is ideal weight the same as healthy weight?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Not exactly. Ideal weight formulas give a single point estimate, while healthy weight is a range — typically a BMI between 18.5 and 24.9. Someone can be at a healthy weight without being at their calculated 'ideal' weight. Both metrics are useful screening tools." }
+      }]
+    }
+    </script>
+  </Fragment>
+
+  <section id="iw-calculator" class="calc-section" style="padding-top:2.5rem">
+    <div class="container">
+      <div class="calc-page-header scroll-reveal">
+        <a href="/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          BMI Calculator
+        </a>
+        <div class="calc-page-title-block">
+          <span class="hero-badge hero-badge-brand" style="margin:0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            4 Scientific Formulas
+          </span>
+          <h1 class="calc-page-title">Ideal Weight <span class="hero-gradient-brand">Calculator</span></h1>
+        </div>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Input Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
+          <div class="card-header">
+            <h2 class="card-title">Enter Your Details</h2>
+            <p class="card-subtitle">We'll calculate your ideal weight using 4 formulas</p>
+          </div>
+
+          <div class="unit-toggle-group" role="group" aria-label="Unit system">
+            <button class="unit-btn active" id="btnMetric" onclick="setUnit('metric')">Metric</button>
+            <button class="unit-btn" id="btnImperial" onclick="setUnit('imperial')">Imperial</button>
+          </div>
+
+          <form id="iwForm" class="bmi-form" novalidate>
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <div class="gender-group">
+                <label class="gender-option">
+                  <input type="radio" name="iwGender" value="male" checked />
+                  <span class="gender-card">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                    Male
+                  </span>
+                </label>
+                <label class="gender-option">
+                  <input type="radio" name="iwGender" value="female" />
+                  <span class="gender-card">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/><path d="M9 20h6"/></svg>
+                    Female
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Height Metric -->
+            <div class="form-group" id="iwHeightMetricGroup">
+              <label class="form-label" for="iwHeightCm">Height</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4 6l3 3M4 12h4M4 18l3-3M20 6l-3 3M20 12h-4M20 18l-3-3"/></svg>
+                <input class="form-input" type="number" id="iwHeightCm" placeholder="e.g. 175" min="100" max="280" />
+                <span class="input-unit">cm</span>
+              </div>
+              <div class="form-error" id="iwHeightCmError"></div>
+            </div>
+
+            <!-- Height Imperial -->
+            <div class="form-group hidden" id="iwHeightImperialGroup">
+              <label class="form-label">Height</label>
+              <div class="imperial-row">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg>
+                  <input class="form-input" type="number" id="iwHeightFt" placeholder="5" min="1" max="9" />
+                  <span class="input-unit">ft</span>
+                </div>
+                <div class="input-wrapper">
+                  <input class="form-input" type="number" id="iwHeightIn" placeholder="9" min="0" max="11" />
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-error" id="iwHeightImperialError"></div>
+            </div>
+
+            <!-- Current Weight (optional) -->
+            <div class="form-group" id="iwWeightMetricGroup">
+              <label class="form-label" for="iwWeightKg">Current Weight <span class="label-hint">(optional)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="iwWeightKg" placeholder="e.g. 70" min="20" max="600" step="0.1" />
+                <span class="input-unit">kg</span>
+              </div>
+            </div>
+
+            <div class="form-group hidden" id="iwWeightImperialGroup">
+              <label class="form-label" for="iwWeightLbs">Current Weight <span class="label-hint">(optional)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="iwWeightLbs" placeholder="e.g. 154" min="44" max="1300" step="0.1" />
+                <span class="input-unit">lbs</span>
+              </div>
+            </div>
+
+            <!-- Frame Size -->
+            <div class="form-group">
+              <label class="form-label">Frame Size</label>
+              <div class="frame-grid">
+                <label class="frame-option">
+                  <input type="radio" name="iwFrame" value="small" />
+                  <span class="frame-card">🦴<br/>Small</span>
+                </label>
+                <label class="frame-option">
+                  <input type="radio" name="iwFrame" value="medium" checked />
+                  <span class="frame-card">🏃<br/>Medium</span>
+                </label>
+                <label class="frame-option">
+                  <input type="radio" name="iwFrame" value="large" />
+                  <span class="frame-card">🏋️<br/>Large</span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="calc-btn-brand">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              Calculate Ideal Weight
+            </button>
+
+            <button type="button" class="reset-btn" onclick="resetIwForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.15s" id="iwResultCard">
+          <div class="cal-placeholder" id="iwPlaceholder">
+            <div class="cal-placeholder-icon" style="background:rgba(14,165,233,0.08);color:#0ea5e9">⚖️</div>
+            <p class="placeholder-text">Enter your details and click <strong>Calculate Ideal Weight</strong> to see results from 4 scientific formulas</p>
+          </div>
+
+          <div class="cal-result-section hidden fade-in-up" id="iwResultContent">
+            <div class="result-hero">
+              <div class="result-hero-label">Your Ideal Weight (Average)</div>
+              <div class="result-hero-value" id="iwAvgValue">–</div>
+              <div class="result-hero-unit" id="iwAvgUnit">kg</div>
+            </div>
+
+            <!-- Weight delta -->
+            <div class="weight-diff" id="iwWeightDiff" style="display:none"></div>
+
+            <!-- Formula comparison -->
+            <div>
+              <h3 class="section-title" style="margin-bottom:0.75rem">Ideal Weight by Formula</h3>
+              <div class="table-wrapper">
+                <table class="comparison-table" id="iwFormulaTable">
+                  <thead>
+                    <tr><th>Formula</th><th>Ideal Weight</th><th>BMI at Ideal</th></tr>
+                  </thead>
+                  <tbody id="iwFormulaBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Healthy range -->
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-label">Healthy BMI Range</div>
+                <div class="stat-value stat-small">18.5 – 24.9</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Healthy Weight Range</div>
+                <div class="stat-value stat-small" id="iwHealthyRange">–</div>
+              </div>
+            </div>
+
+            <div class="health-message" id="iwHealthMsg"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Section -->
+      <div class="section-header scroll-reveal" style="margin-top:4.5rem;margin-bottom:2.5rem">
+        <div class="section-badge" style="background:rgba(14,165,233,0.1);color:#0ea5e9;border-color:rgba(14,165,233,0.2)">Learn More</div>
+        <h2 class="section-title-lg">Understanding Ideal Body Weight</h2>
+      </div>
+
+      <div class="info-grid scroll-reveal" style="margin-top:1.5rem;--reveal-delay:0.1s">
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(14,165,233,0.1);color:#0ea5e9">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <h3 class="info-title">Devine Formula</h3>
+          <p class="info-text">The most widely used formula in clinical settings. Originally developed in 1974 for drug dosing calculations. Men: 50 + 2.3 kg per inch over 5 ft. Women: 45.5 + 2.3 kg per inch over 5 ft.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(16,185,129,0.1);color:#10b981">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="info-title">Robinson Formula</h3>
+          <p class="info-text">Developed in 1983, slightly more generous than Devine. Men: 52 + 1.9 kg per inch over 5 ft. Women: 49 + 1.7 kg per inch over 5 ft.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(249,115,22,0.1);color:#f97316">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3 class="info-title">Miller Formula</h3>
+          <p class="info-text">Published in 1983, tends to give the lowest ideal weight estimates. Men: 56.2 + 1.41 kg per inch over 5 ft. Women: 53.1 + 1.36 kg per inch over 5 ft.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <h3 class="info-title">Hamwi Formula</h3>
+          <p class="info-text">Developed in 1964, one of the earliest IBW formulas. Men: 48 + 2.7 kg per inch over 5 ft. Women: 45.5 + 2.2 kg per inch over 5 ft.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO Content -->
+  <section class="seo-guide-section scroll-reveal">
+    <div class="container">
+      <div class="seo-article-main">
+        <h2>The Complete Guide to Ideal Body Weight: Formulas, Charts & What It Really Means</h2>
+        <p>Knowing your <strong>ideal body weight</strong> provides a valuable health benchmark that goes beyond simple scale readings. Unlike BMI, which categorizes your weight relative to height into broad ranges, ideal weight formulas provide a specific target weight that medical professionals have historically associated with the lowest risk of weight-related diseases. This <strong>ideal weight calculator</strong> uses four scientifically validated formulas to give you the most comprehensive picture of your target weight, adjusted for gender and body frame size.</p>
+
+        <h3>Understanding the Four Ideal Weight Formulas</h3>
+        <p>Each formula was developed independently by medical researchers and takes a slightly different approach to estimating ideal weight. The <strong>Devine formula</strong> (1974) is the most commonly used in clinical pharmacology, where accurate weight estimation is essential for drug dosing. The <strong>Robinson formula</strong> (1983) was developed as a refinement of Devine's work, using updated population data. The <strong>Miller formula</strong> (1983) typically produces the lowest estimates and may be more appropriate for individuals with naturally lean builds. The <strong>Hamwi formula</strong> (1964) is one of the oldest and tends to produce slightly higher ideal weight estimates.</p>
+        <p>By comparing all four results, you get a range rather than a single number — which more accurately reflects the reality that there is no single "perfect" weight. The average of the four formulas provides a balanced, reliable target weight.</p>
+
+        <h3>How Frame Size Affects Your Ideal Weight</h3>
+        <p>Body frame size is an important but often overlooked factor in weight assessment. People with larger skeletal frames naturally weigh more than those with smaller frames, even at the same height. A <strong>small frame</strong> typically indicates ideal weight about 10% below the calculated value, while a <strong>large frame</strong> suggests an ideal weight approximately 10% above the standard calculation. You can estimate your frame size using the wrist measurement method: wrap your thumb and middle finger around your opposite wrist. If they overlap significantly, you likely have a small frame; if they just touch, medium; if they don't touch, large.</p>
+
+        <h3>Ideal Weight vs Healthy Weight vs Goal Weight</h3>
+        <p>It's important to understand the distinction between these commonly confused terms. <strong>Ideal weight</strong> is a formula-derived single-point estimate historically linked to lowest mortality risk. <strong>Healthy weight</strong> is the broader range corresponding to a BMI between 18.5 and 24.9 — you can be at a "healthy" weight without being at your calculated "ideal." <strong>Goal weight</strong> is personal — it's what you're actually aiming for, which might differ from the formula output based on your body composition, fitness level, and personal preferences. An athlete may have a "goal weight" significantly above their calculated ideal weight due to muscle mass.</p>
+
+        <h3>Common Ideal Weight Questions</h3>
+        <p>Many people search for very specific answers like <strong>"ideal weight for 5 feet 8 inches"</strong> or <strong>"healthy weight for 170 cm male."</strong> While these formulas provide concrete answers, remember they don't account for muscle mass, body fat distribution, or metabolic health. A person at their "ideal" weight can still be metabolically unhealthy if they have high visceral fat, and someone above their "ideal" weight can be perfectly healthy with significant muscle mass. Use ideal weight as a directional guide, not an absolute standard.</p>
+
+        <p>For a more complete health picture, combine this <strong>ideal weight calculator</strong> with our <a href="/">BMI Calculator</a>, <a href="/body-fat.html">Body Fat Calculator</a>, and <a href="/tdee.html">TDEE Calculator</a> to understand your body composition and energy needs holistically.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge" style="background:rgba(14,165,233,0.1);color:#0ea5e9;border-color:rgba(14,165,233,0.2)">FAQ</div>
+        <h2 class="section-title-lg">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list scroll-reveal" style="--reveal-delay:0.05s">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">What is ideal body weight and how is it determined?<svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-answer"><p>Ideal body weight is an estimated weight considered healthiest for a given height, determined using medical formulas like Devine, Robinson, Miller, and Hamwi. These formulas calculate based on height and gender, originally developed for clinical pharmacology.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">Which ideal weight formula is most accurate?<svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-answer"><p>No single formula is definitively most accurate. The Devine formula is most common in clinical use. Using the average of all four provides the most balanced estimate.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">Does frame size affect ideal weight?<svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-answer"><p>Yes. People with larger skeletal frames naturally weigh more. A small frame may reduce ideal weight by 10%, while a large frame may increase it by 10%. Use the wrist measurement method to estimate your frame size.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">What is the ideal weight for 5 feet 8 inches?<svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-answer"><p>For a male at 5'8" (173 cm), the ideal weight is approximately 63–72 kg (139–159 lbs). For a female, approximately 59–68 kg (130–150 lbs). Frame size can shift these values by ±10%.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">Is ideal weight the same as healthy weight?<svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-answer"><p>Not exactly. Ideal weight is a formula-derived single point, while healthy weight is a range (BMI 18.5–24.9). You can be at a healthy weight without being at your calculated ideal weight.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Calculators -->
+  <section class="related-calcs-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Explore More</div>
+        <h2 class="section-title-lg">Related Calculators</h2>
+      </div>
+      <div class="related-calcs-grid scroll-reveal" style="--reveal-delay:0.05s">
+        <a href="/" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(99,102,241,0.1)">📊</span>
+          <span class="related-calc-name">BMI Calculator</span>
+          <span class="related-calc-desc">Check your Body Mass Index</span>
+        </a>
+        <a href="/body-fat.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(244,63,94,0.1)">📏</span>
+          <span class="related-calc-name">Body Fat Calculator</span>
+          <span class="related-calc-desc">Estimate body fat percentage</span>
+        </a>
+        <a href="/tdee.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(16,185,129,0.1)">⚡</span>
+          <span class="related-calc-name">TDEE Calculator</span>
+          <span class="related-calc-desc">Total daily energy expenditure</span>
+        </a>
+        <a href="/lean-body-mass.html" class="related-calc-card">
+          <span class="related-calc-icon" style="background:rgba(20,184,166,0.1)">💪</span>
+          <span class="related-calc-name">Lean Body Mass</span>
+          <span class="related-calc-desc">Fat-free mass estimation</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="/ideal-weight.js" is:inline></script>
+</Layout>

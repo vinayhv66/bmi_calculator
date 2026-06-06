@@ -1,0 +1,322 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Free Body Fat Calculator (2026) – Estimate Your Body Fat Percentage"
+  description="Calculate your body fat percentage using the U.S. Navy Method. Get accurate body fat estimates with waist, neck, and hip measurements. Includes body fat category chart."
+  keywords="body fat calculator, body fat percentage, US Navy method, body fat estimator, fat percentage calculator, body composition, body fat for men, body fat for women"
+  canonicalUrl="https://calbmi.com/body-fat.html"
+  bodyClass="brand-bf"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BMICalc - Body Fat Calculator",
+      "url": "https://calbmi.com/body-fat.html",
+      "description": "Calculate your body fat percentage using the U.S. Navy Method with waist, neck, and hip measurements.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" }
+    }
+    </script>
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "How accurate is the U.S. Navy body fat method?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The U.S. Navy method has been validated to be within ±3–4% of DEXA scan results for most individuals. It is considered one of the most accessible and reliable methods that doesn't require specialized equipment. Accuracy improves when measurements are taken consistently at the same time of day." }
+      }, {
+        "@type": "Question",
+        "name": "What is a healthy body fat percentage?",
+        "acceptedAnswer": { "@type": "Answer", "text": "For men, essential fat is 2–5%, athletes range 6–13%, fitness is 14–17%, average is 18–24%, and obese is 25%+. For women, essential fat is 10–13%, athletes 14–20%, fitness 21–24%, average 25–31%, and obese 32%+. Women naturally carry more body fat for reproductive health." }
+      }, {
+        "@type": "Question",
+        "name": "How do I measure my waist correctly for body fat calculation?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Measure your waist at the navel (belly button) level while standing relaxed. Don't suck in your stomach. For the neck, measure just below the larynx (Adam's apple) with the tape sloping slightly downward at the front. For women, also measure hips at the widest point." }
+      }, {
+        "@type": "Question",
+        "name": "Is body fat percentage more important than BMI?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Body fat percentage gives a more accurate picture of health than BMI alone. BMI doesn't distinguish between muscle and fat, so a muscular person may have a 'high' BMI but a healthy body fat percentage. However, both metrics together provide the most comprehensive health assessment." }
+      }]
+    }
+    </script>
+  </Fragment>
+
+  <section id="bf-calculator" class="calc-section" style="padding-top:2.5rem">
+    <div class="container">
+      <div class="calc-page-header scroll-reveal">
+        <a href="/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          BMI Calculator
+        </a>
+        <div class="calc-page-title-block">
+          <span class="hero-badge hero-badge-brand" style="margin:0">📏 U.S. Navy Method</span>
+          <h1 class="calc-page-title">Body Fat <span class="hero-gradient-brand">Calculator</span></h1>
+        </div>
+      </div>
+
+      <div class="calc-grid">
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
+          <div class="card-header">
+            <h2 class="card-title">Enter Your Measurements</h2>
+            <p class="card-subtitle">Requires waist and neck measurements</p>
+          </div>
+
+          <div class="unit-toggle-group" role="group" aria-label="Unit system">
+            <button class="unit-btn active" id="btnMetric" onclick="setUnit('metric')">Metric (cm/kg)</button>
+            <button class="unit-btn" id="btnImperial" onclick="setUnit('imperial')">Imperial (in/lbs)</button>
+          </div>
+
+          <form id="bfForm" class="bmi-form" novalidate>
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <div class="gender-group">
+                <label class="gender-option">
+                  <input type="radio" name="bfGender" value="male" checked />
+                  <span class="gender-card"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>Male</span>
+                </label>
+                <label class="gender-option">
+                  <input type="radio" name="bfGender" value="female" />
+                  <span class="gender-card"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/><path d="M9 20h6"/></svg>Female</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Height -->
+            <div class="form-group" id="bfHeightMetricGroup">
+              <label class="form-label" for="bfHeightCm">Height</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4 6l3 3M4 12h4"/></svg>
+                <input class="form-input" type="number" id="bfHeightCm" placeholder="e.g. 175" min="100" max="280" />
+                <span class="input-unit">cm</span>
+              </div>
+              <div class="form-error" id="bfHeightCmError"></div>
+            </div>
+            <div class="form-group hidden" id="bfHeightImperialGroup">
+              <label class="form-label">Height</label>
+              <div class="imperial-row">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg>
+                  <input class="form-input" type="number" id="bfHeightFt" placeholder="5" min="1" max="9" /><span class="input-unit">ft</span>
+                </div>
+                <div class="input-wrapper">
+                  <input class="form-input" type="number" id="bfHeightIn" placeholder="9" min="0" max="11" /><span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-error" id="bfHeightImperialError"></div>
+            </div>
+
+            <!-- Weight -->
+            <div class="form-group" id="bfWeightMetricGroup">
+              <label class="form-label" for="bfWeightKg">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="bfWeightKg" placeholder="e.g. 70" min="30" max="600" step="0.1" /><span class="input-unit">kg</span>
+              </div>
+              <div class="form-error" id="bfWeightKgError"></div>
+            </div>
+            <div class="form-group hidden" id="bfWeightImperialGroup">
+              <label class="form-label" for="bfWeightLbs">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="bfWeightLbs" placeholder="e.g. 154" min="66" max="1300" step="0.1" /><span class="input-unit">lbs</span>
+              </div>
+              <div class="form-error" id="bfWeightLbsError"></div>
+            </div>
+
+            <!-- Body Measurements -->
+            <div class="form-group">
+              <label class="form-label">Body Measurements <span class="label-hint" id="bfMeasUnit">(cm)</span></label>
+              <div class="measurement-grid">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                  <input class="form-input" type="number" id="bfNeck" placeholder="Neck" min="20" max="80" step="0.1" style="padding-left:2.5rem" />
+                  <span class="input-unit" id="bfNeckUnit">cm</span>
+                </div>
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="2"/></svg>
+                  <input class="form-input" type="number" id="bfWaist" placeholder="Waist (at navel)" min="40" max="200" step="0.1" style="padding-left:2.5rem" />
+                  <span class="input-unit" id="bfWaistUnit">cm</span>
+                </div>
+              </div>
+              <div id="bfHipGroup" class="measurement-grid" style="margin-top:0.75rem;display:none">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/></svg>
+                  <input class="form-input" type="number" id="bfHip" placeholder="Hip (widest point)" min="50" max="200" step="0.1" style="padding-left:2.5rem" />
+                  <span class="input-unit" id="bfHipUnit">cm</span>
+                </div>
+              </div>
+              <div class="form-error" id="bfMeasError"></div>
+            </div>
+
+            <button type="submit" class="calc-btn-brand">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              Calculate Body Fat
+            </button>
+            <button type="button" class="reset-btn" onclick="resetBfForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.15s" id="bfResultCard">
+          <div class="cal-placeholder" id="bfPlaceholder">
+            <div class="cal-placeholder-icon" style="background:rgba(244,63,94,0.08);color:#f43f5e">📏</div>
+            <p class="placeholder-text">Enter your measurements and click <strong>Calculate Body Fat</strong> to see your results</p>
+          </div>
+
+          <div class="cal-result-section hidden fade-in-up" id="bfResultContent">
+            <div class="result-hero">
+              <div class="result-hero-label">Your Body Fat Percentage</div>
+              <div class="result-hero-value" id="bfValue">–</div>
+              <div class="result-hero-unit" id="bfCategory">–</div>
+            </div>
+
+            <!-- Category bar -->
+            <div id="bfCategoryBar"></div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-label">Fat Mass</div>
+                <div class="stat-value stat-small" id="bfFatMass">–</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Lean Mass</div>
+                <div class="stat-value stat-small" id="bfLeanMass">–</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Body Fat Category</div>
+                <div class="stat-value stat-small" id="bfCatName">–</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">BMI</div>
+                <div class="stat-value stat-small" id="bfBmi">–</div>
+              </div>
+            </div>
+
+            <!-- Body fat ranges table -->
+            <div>
+              <h3 class="section-title" style="margin-bottom:0.75rem">Body Fat Categories</h3>
+              <div class="table-wrapper" id="bfRangesTable"></div>
+            </div>
+
+            <div class="health-message" id="bfHealthMsg"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Cards -->
+      <div class="section-header scroll-reveal" style="margin-top:4.5rem;margin-bottom:2.5rem">
+        <div class="section-badge" style="background:rgba(244,63,94,0.1);color:#f43f5e;border-color:rgba(244,63,94,0.2)">Learn More</div>
+        <h2 class="section-title-lg">Understanding Body Fat Percentage</h2>
+      </div>
+
+      <div class="info-grid scroll-reveal" style="margin-top:1.5rem;--reveal-delay:0.1s">
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(244,63,94,0.1);color:#f43f5e">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="info-title">U.S. Navy Method</h3>
+          <p class="info-text">Developed by the U.S. Navy for fitness assessments. Uses neck, waist (and hip for women) circumference with height to estimate body fat via a logarithmic formula. Accurate to within ±3–4% of DEXA scans.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(99,102,241,0.1);color:#6366f1">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3 class="info-title">Body Fat vs BMI</h3>
+          <p class="info-text">BMI doesn't distinguish between fat and muscle. A bodybuilder might have a "high" BMI but low body fat. Body fat % gives a much more accurate picture of actual health and fitness status.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(16,185,129,0.1);color:#10b981">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="info-title">Measurement Tips</h3>
+          <p class="info-text">Measure in the morning before eating. Stand relaxed, don't suck in your gut. Waist at navel level. Neck below Adam's apple. Hips at widest point. Use a flexible tape measure.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <h3 class="info-title">Gender Differences</h3>
+          <p class="info-text">Women naturally carry 6–11% more body fat than men due to essential fat needed for reproductive function. This is why body fat categories differ significantly between genders.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO Content -->
+  <section class="seo-guide-section scroll-reveal">
+    <div class="container">
+      <div class="seo-article-main">
+        <h2>The Complete Guide to Body Fat Percentage: Measurement, Ranges & Health Impact</h2>
+        <p>Your <strong>body fat percentage</strong> is one of the most important indicators of physical health and fitness level. While BMI provides a rough screening tool based on height and weight alone, body fat percentage tells you exactly how much of your body weight is composed of fat tissue versus lean mass (muscle, bone, water, organs). This <strong>body fat calculator</strong> uses the U.S. Navy Method — a validated circumference-based estimation technique that requires only a measuring tape and your basic measurements.</p>
+
+        <h3>The U.S. Navy Body Fat Formula Explained</h3>
+        <p>The U.S. Navy developed this formula for military fitness assessments because it needed a reliable, equipment-free method to evaluate body composition across large groups. For <strong>men</strong>, the formula uses height, waist circumference (measured at the navel), and neck circumference: <code>BF% = 86.010 × log10(waist − neck) − 70.041 × log10(height) + 36.76</code>. For <strong>women</strong>, the hip circumference is added: <code>BF% = 163.205 × log10(waist + hip − neck) − 97.684 × log10(height) − 78.387</code>. All measurements should be in centimeters for the metric version. Research has validated this method to be within ±3–4% of DEXA scan results.</p>
+
+        <h3>Understanding Body Fat Categories</h3>
+        <p><strong>Essential fat</strong> (2–5% men, 10–13% women) is the minimum required for basic physiological function — dropping below this level is dangerous. <strong>Athletes</strong> (6–13% men, 14–20% women) maintain very low fat while preserving performance. The <strong>fitness</strong> range (14–17% men, 21–24% women) represents a lean, healthy physique. <strong>Average</strong> body fat (18–24% men, 25–31% women) is typical and considered acceptable, while <strong>obese</strong> levels (25%+ men, 32%+ women) are associated with increased health risks including cardiovascular disease, Type 2 diabetes, and joint problems.</p>
+
+        <h3>Body Fat vs BMI: Why Both Matter</h3>
+        <p>BMI and body fat percentage measure fundamentally different things. A muscular athlete with visible abs might have a BMI of 28 ("overweight") but only 12% body fat. Conversely, someone with a "normal" BMI of 23 could carry 30% body fat if they have very little muscle mass — a condition sometimes called "skinny fat" or normal-weight obesity. Using both metrics together provides the most comprehensive picture of your health status.</p>
+
+        <h3>How to Reduce Body Fat Safely</h3>
+        <p>Healthy fat loss involves maintaining a moderate caloric deficit (300–500 calories below <a href="/tdee.html">TDEE</a>) while consuming adequate protein (1.6–2.2g per kg body weight) and engaging in resistance training to preserve lean mass. Aim to lose 0.5–1% of body weight per week. Crash diets and extreme deficits lead to muscle loss and metabolic adaptation, which makes long-term fat loss harder. Monitor your body fat percentage every 4–6 weeks to track progress rather than relying solely on scale weight.</p>
+
+        <p>For a complete health assessment, combine this <strong>body fat calculator</strong> with our <a href="/">BMI Calculator</a>, <a href="/lean-body-mass.html">Lean Body Mass Calculator</a>, and <a href="/ideal-weight.html">Ideal Weight Calculator</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge" style="background:rgba(244,63,94,0.1);color:#f43f5e;border-color:rgba(244,63,94,0.2)">FAQ</div>
+        <h2 class="section-title-lg">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list scroll-reveal" style="--reveal-delay:0.05s">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">How accurate is the U.S. Navy body fat method?<svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-answer"><p>The U.S. Navy method is accurate to within ±3–4% of DEXA scan results for most people. It's one of the most accessible and reliable circumference-based methods available.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">What is a healthy body fat percentage?<svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-answer"><p>For men: athletes 6–13%, fitness 14–17%, average 18–24%. For women: athletes 14–20%, fitness 21–24%, average 25–31%. Women naturally carry more essential fat for reproductive function.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">How do I measure my waist correctly?<svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-answer"><p>Measure at the navel (belly button) level while standing relaxed. Don't suck in your stomach. For neck, measure just below the Adam's apple. For hips (women), measure at the widest point of your buttocks.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">Is body fat percentage more important than BMI?<svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-answer"><p>Body fat percentage gives a more accurate picture since BMI can't distinguish muscle from fat. However, using both together provides the best health assessment.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Calculators -->
+  <section class="related-calcs-section">
+    <div class="container">
+      <div class="section-header"><div class="section-badge">Explore More</div><h2 class="section-title-lg">Related Calculators</h2></div>
+      <div class="related-calcs-grid scroll-reveal" style="--reveal-delay:0.05s">
+        <a href="/" class="related-calc-card"><span class="related-calc-icon" style="background:rgba(99,102,241,0.1)">📊</span><span class="related-calc-name">BMI Calculator</span><span class="related-calc-desc">Check your Body Mass Index</span></a>
+        <a href="/lean-body-mass.html" class="related-calc-card"><span class="related-calc-icon" style="background:rgba(20,184,166,0.1)">💪</span><span class="related-calc-name">Lean Body Mass</span><span class="related-calc-desc">Fat-free mass estimation</span></a>
+        <a href="/ideal-weight.html" class="related-calc-card"><span class="related-calc-icon" style="background:rgba(14,165,233,0.1)">⚖️</span><span class="related-calc-name">Ideal Weight</span><span class="related-calc-desc">Find your perfect weight</span></a>
+        <a href="/tdee.html" class="related-calc-card"><span class="related-calc-icon" style="background:rgba(16,185,129,0.1)">⚡</span><span class="related-calc-name">TDEE Calculator</span><span class="related-calc-desc">Total daily energy expenditure</span></a>
+      </div>
+    </div>
+  </section>
+
+  <script src="/body-fat.js" is:inline></script>
+</Layout>

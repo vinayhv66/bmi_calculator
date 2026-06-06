@@ -1,0 +1,451 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="BMI Calculator in kg and cm (2026) – Metric BMI Calculator & Chart"
+  description="Calculate your Body Mass Index in metric units (kilograms and centimeters). See step-by-step metric formulas, conversion charts, and healthy weight tables."
+  keywords="bmi calculator in kg and cm, bmi calculator kg, bmi formula kg cm, metric bmi calculator, bmi chart in kg"
+  canonicalUrl="https://calbmi.com/bmi-calculator-kg-cm.html"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BMICalc - BMI Calculator in kg and cm",
+      "url": "https://calbmi.com/bmi-calculator-kg-cm.html",
+      "description": "Calculate Body Mass Index (BMI) using metric measurements (kilograms and centimeters). Includes metric-to-imperial conversions.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" }
+    }
+    </script>
+  </Fragment>
+
+  <!-- Calculator Section -->
+  <section id="calculator" class="calc-section" style="padding-top:2.5rem">
+    <div class="container">
+      <div class="bmi-page-header scroll-reveal">
+        <a href="/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          Home
+        </a>
+        <div class="bmi-page-title-block">
+          <span class="hero-badge" style="margin:0">
+            📏 Metric System (kg/cm)
+          </span>
+          <h1 class="bmi-page-title">BMI Calculator <span class="hero-gradient">in kg &amp; cm</span></h1>
+        </div>
+        <p class="bmi-page-sub">Quickly calculate your Body Mass Index using metric units. Fast, accurate, and easy-to-use.</p>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Input Card -->
+        <div class="card calc-card scroll-reveal" style="--reveal-delay:0.05s">
+          <div class="card-header">
+            <h2 class="card-title">Enter Your Details</h2>
+            <p class="card-subtitle">Fill in your measurements below</p>
+          </div>
+
+          <!-- Unit Toggle -->
+          <div class="unit-toggle-group" role="group" aria-label="Unit system">
+            <button class="unit-btn active" id="btnMetric" data-unit="metric" onclick="setUnit('metric')">Metric</button>
+            <button class="unit-btn" id="btnImperial" data-unit="imperial" onclick="setUnit('imperial')">Imperial</button>
+          </div>
+
+          <form id="bmiForm" class="bmi-form" novalidate>
+            <!-- Age -->
+            <div class="form-group">
+              <label class="form-label" for="ageInput">Age <span class="label-hint">(2 – 120 years)</span></label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                <input class="form-input" type="number" id="ageInput" placeholder="e.g. 25" min="2" max="120" />
+                <span class="input-unit">yrs</span>
+              </div>
+              <div class="form-error" id="ageError"></div>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <div class="gender-group">
+                <label class="gender-option" id="genderMaleLabel">
+                  <input type="radio" name="gender" value="male" id="genderMale" checked />
+                  <span class="gender-card">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+                    Male
+                  </span>
+                </label>
+                <label class="gender-option" id="genderFemaleLabel">
+                  <input type="radio" name="gender" value="female" id="genderFemale" />
+                  <span class="gender-card">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/><path d="M9 20h6"/></svg>
+                    Female
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Height (Metric) -->
+            <div class="form-group" id="heightMetricGroup">
+              <label class="form-label" for="heightCm">Height</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4 6l3 3M4 12h4M4 18l3-3M20 6l-3 3M20 12h-4M20 18l-3-3"/></svg>
+                <input class="form-input" type="number" id="heightCm" placeholder="e.g. 175" min="50" max="280" />
+                <span class="input-unit">cm</span>
+              </div>
+              <div class="form-error" id="heightCmError"></div>
+            </div>
+
+            <!-- Height (Imperial) -->
+            <div class="form-group hidden" id="heightImperialGroup">
+              <label class="form-label">Height</label>
+              <div class="imperial-row">
+                <div class="input-wrapper">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/></svg>
+                  <input class="form-input" type="number" id="heightFt" placeholder="5" min="1" max="9" />
+                  <span class="input-unit">ft</span>
+                </div>
+                <div class="input-wrapper">
+                  <input class="form-input" type="number" id="heightIn" placeholder="9" min="0" max="11" />
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-error" id="heightImperialError"></div>
+            </div>
+
+            <!-- Weight (Metric) -->
+            <div class="form-group" id="weightMetricGroup">
+              <label class="form-label" for="weightKg">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="weightKg" placeholder="e.g. 70" min="2" max="600" step="0.1" />
+                <span class="input-unit">kg</span>
+              </div>
+              <div class="form-error" id="weightKgError"></div>
+            </div>
+
+            <!-- Weight (Imperial) -->
+            <div class="form-group hidden" id="weightImperialGroup">
+              <label class="form-label" for="weightLbs">Weight</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/><rect x="3" y="6" width="18" height="15" rx="2"/></svg>
+                <input class="form-input" type="number" id="weightLbs" placeholder="e.g. 154" min="5" max="1300" step="0.1" />
+                <span class="input-unit">lbs</span>
+              </div>
+              <div class="form-error" id="weightLbsError"></div>
+            </div>
+
+            <button type="submit" class="calc-btn" id="calcBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              Calculate BMI
+            </button>
+
+            <button type="button" class="reset-btn" id="resetBtn" onclick="resetForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card result-card scroll-reveal" style="--reveal-delay:0.15s" id="resultCard">
+          <div class="result-placeholder" id="resultPlaceholder">
+            <div class="placeholder-icon">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4l3 3"/>
+              </svg>
+            </div>
+            <p class="placeholder-text">Enter your details and click <strong>Calculate BMI</strong> to see your results</p>
+          </div>
+
+          <div class="result-content hidden" id="resultContent">
+            <!-- Gauge -->
+            <div class="gauge-container">
+              <svg class="gauge-svg" viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="gaugeUnderweight" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#60a5fa"/>
+                    <stop offset="100%" stop-color="#3b82f6"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeNormal" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#34d399"/>
+                    <stop offset="100%" stop-color="#10b981"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeOverweight" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#fbbf24"/>
+                    <stop offset="100%" stop-color="#f59e0b"/>
+                  </linearGradient>
+                  <linearGradient id="gaugeObese" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#f87171"/>
+                    <stop offset="100%" stop-color="#ef4444"/>
+                  </linearGradient>
+                  <filter id="gaugeShadow">
+                    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.2)"/>
+                  </filter>
+                </defs>
+
+                <!-- Background arcs -->
+                <path d="M 20 115 A 90 90 0 0 1 57.5 36.4" stroke="url(#gaugeUnderweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M 57.5 36.4 A 90 90 0 0 1 110 25" stroke="url(#gaugeNormal)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M 110 25 A 90 90 0 0 1 162.5 36.4" stroke="url(#gaugeOverweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M 162.5 36.4 A 90 90 0 0 1 200 115" stroke="url(#gaugeObese)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.3"/>
+
+                <!-- Active arcs -->
+                <path id="arcUnderweight" d="M 20 115 A 90 90 0 0 1 57.5 36.4" stroke="url(#gaugeUnderweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+                <path id="arcNormal" d="M 57.5 36.4 A 90 90 0 0 1 110 25" stroke="url(#gaugeNormal)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+                <path id="arcOverweight" d="M 110 25 A 90 90 0 0 1 162.5 36.4" stroke="url(#gaugeOverweight)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+                <path id="arcObese" d="M 162.5 36.4 A 90 90 0 0 1 200 115" stroke="url(#gaugeObese)" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" class="arc-segment"/>
+
+                <!-- Needle -->
+                <g id="gaugeNeedle" transform="rotate(0, 110, 115)">
+                  <line x1="110" y1="115" x2="110" y2="40" stroke="var(--foreground)" stroke-width="2.5" stroke-linecap="round" filter="url(#gaugeShadow)"/>
+                  <circle cx="110" cy="115" r="7" fill="var(--foreground)" filter="url(#gaugeShadow)"/>
+                  <circle cx="110" cy="115" r="4" fill="var(--background)"/>
+                </g>
+
+                <!-- BMI Value -->
+                <text id="gaugeBmiValue" x="110" y="95" text-anchor="middle" class="gauge-value-text" font-size="22" font-weight="800" fill="var(--foreground)">–</text>
+                <text x="110" y="108" text-anchor="middle" font-size="9" fill="var(--muted-foreground)" font-weight="500">BMI</text>
+
+                <!-- Labels -->
+                <text x="10" y="128" text-anchor="middle" font-size="8" fill="#3b82f6" font-weight="600">Under</text>
+                <text x="65" y="28" text-anchor="middle" font-size="8" fill="#10b981" font-weight="600">Normal</text>
+                <text x="157" y="28" text-anchor="middle" font-size="8" fill="#f59e0b" font-weight="600">Over</text>
+                <text x="210" y="128" text-anchor="middle" font-size="8" fill="#ef4444" font-weight="600">Obese</text>
+              </svg>
+            </div>
+
+            <!-- Category Badge -->
+            <div class="category-badge-container">
+              <div class="category-badge" id="categoryBadge">
+                <span id="categoryIcon"></span>
+                <span id="categoryText">–</span>
+              </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-label">Your BMI</div>
+                <div class="stat-value" id="statBmi">–</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Healthy Range</div>
+                <div class="stat-value stat-small" id="statRange">18.5–24.9</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Ideal Weight</div>
+                <div class="stat-value stat-small" id="statIdeal">–</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">BMI Prime</div>
+                <div class="stat-value" id="statPrime">–</div>
+              </div>
+            </div>
+
+            <!-- Health message -->
+            <div class="health-message" id="healthMessage"></div>
+
+            <!-- Weight to Lose/Gain -->
+            <div class="weight-diff" id="weightDiff"></div>
+
+            <!-- Calories CTA -->
+            <div class="calories-cta" id="caloriesCta">
+              <div class="cta-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              </div>
+              <div class="cta-body">
+                <p class="cta-title">Daily calories in metric?</p>
+                <p class="cta-sub">Find out how many calories your body burns in kilocalories (kcal) per day.</p>
+              </div>
+              <a href="calories.html" class="cta-btn" id="ctaBtn">
+                Calculate
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BMI Classification Table -->
+      <div class="card table-card scroll-reveal" style="--reveal-delay:0.05s" id="tableCard">
+        <h3 class="section-title">Metric BMI Classification Table (kg &amp; cm)</h3>
+        <p class="card-subtitle" style="margin-bottom:1rem">Standard World Health Organization thresholds for metric weight and height</p>
+        <div class="table-wrapper">
+          <table class="bmi-table" id="bmiTable">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>BMI Range (kg/m²)</th>
+                <th>Health Risk Description</th>
+                <th>Weight Range Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-category="underweight" class="table-row">
+                <td><span class="category-dot" style="background:#3b82f6"></span> Underweight</td>
+                <td>Less than 18.5</td>
+                <td>Risk of nutritional deficiency and bone density loss.</td>
+                <td><span class="risk-badge risk-moderate">Moderate</span></td>
+              </tr>
+              <tr data-category="normal" class="table-row">
+                <td><span class="category-dot" style="background:#10b981"></span> Normal weight</td>
+                <td>18.5 – 24.9</td>
+                <td>Lowest overall risk for chronic cardiovascular disease.</td>
+                <td><span class="risk-badge risk-low">Low (Optimal)</span></td>
+              </tr>
+              <tr data-category="overweight" class="table-row">
+                <td><span class="category-dot" style="background:#f59e0b"></span> Overweight</td>
+                <td>25.0 – 29.9</td>
+                <td>Increased risk of developing diabetes and blood pressure issues.</td>
+                <td><span class="risk-badge risk-elevated">Elevated</span></td>
+              </tr>
+              <tr data-category="obese1" class="table-row">
+                <td><span class="category-dot" style="background:#f97316"></span> Obese (Class I)</td>
+                <td>30.0 – 34.9</td>
+                <td>High risk of metabolic syndrome and joint deterioration.</td>
+                <td><span class="risk-badge risk-high">High</span></td>
+              </tr>
+              <tr data-category="obese2" class="table-row">
+                <td><span class="category-dot" style="background:#ef4444"></span> Obese (Class II)</td>
+                <td>35.0 – 39.9</td>
+                <td>Very high risk of heart conditions, stroke, and sleep apnea.</td>
+                <td><span class="risk-badge risk-very-high">Very High</span></td>
+              </tr>
+              <tr data-category="obese3" class="table-row">
+                <td><span class="category-dot" style="background:#9f1239"></span> Obese (Class III)</td>
+                <td>40.0 and above</td>
+                <td>Extremely high clinical risk for overall systemic disease.</td>
+                <td><span class="risk-badge risk-extreme">Extreme</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demographic SEO Article -->
+  <section class="landing-article">
+    <div class="container">
+      <div class="landing-article-inner scroll-reveal">
+        <h2>The Complete Guide to Metric BMI Calculation in kg and cm</h2>
+        <p>In international clinical medicine, healthcare monitoring, and global fitness, standardizing body weight metrics is essential. The **Body Mass Index (BMI)** serves as the primary epidemiological tool to estimate body fat levels and screen for weight-related health risks. While certain countries (like the United States) frequently use imperial units (pounds and inches), the vast majority of the world utilizes the **Metric System**—relying on **kilograms (kg) for weight and centimeters (cm) or meters (m) for height**. This guide provides a detailed, step-by-step breakdown of how to calculate your BMI in metric units, metric-to-imperial conversion tables, and standard health charts.</p>
+
+        <h3>The Metric BMI Formula: Step-by-Step Mathematical Guide</h3>
+        <p>Calculating your BMI in the metric system is direct and mathematically elegant. The formula is defined as your weight in kilograms divided by your height in meters squared:</p>
+        <p><code>BMI = Weight (kg) / [Height (m)]²</code></p>
+        <p>Because most people know their height in centimeters (cm) rather than meters (m), you must first convert centimeters to meters. There are 100 centimeters in 1 meter, so you simply divide your height by 100. Here is the exact step-by-step process:</p>
+        
+        <h4>Step 1: Convert Height from Centimeters to Meters</h4>
+        <p>Divide your height in centimeters by 100. For example, if you stand 175 cm tall:</p>
+        <p><code>175 cm / 100 = 1.75 meters</code></p>
+        
+        <h4>Step 2: Square Your Height in Meters</h4>
+        <p>Multiply the result from Step 1 by itself. This gives your height in meters squared:</p>
+        <p><code>1.75 × 1.75 = 3.0625 m²</code></p>
+
+        <h4>Step 3: Divide Your Weight by the Height Squared</h4>
+        <p>Take your current weight in kilograms and divide it by the number from Step 2. For example, if you weigh 70 kg:</p>
+        <p><code>BMI = 70 / 3.0625 = 22.85</code></p>
+        <p>Your calculated BMI score is **22.85**, which falls comfortably in the healthy normal range (18.5 – 24.9).</p>
+
+        <h3>Conversion Tables: Imperial to Metric</h3>
+        <p>If you are accustomed to measuring your height in feet and inches and your weight in pounds, you can convert those values to metric equivalents using these standard reference charts:</p>
+
+        <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Height Conversion Table (Feet & Inches to Centimeters)</h4>
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Height (Imperial)</th>
+              <th>Height (Metric Centimeters)</th>
+              <th>Height (Metric Meters)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>5 feet 0 inches (5'0")</td>
+              <td>152.4 cm</td>
+              <td>1.52 m</td>
+            </tr>
+            <tr>
+              <td>5 feet 3 inches (5'3")</td>
+              <td>160.0 cm</td>
+              <td>1.60 m</td>
+            </tr>
+            <tr>
+              <td>5 feet 6 inches (5'6")</td>
+              <td>167.6 cm</td>
+              <td>1.68 m</td>
+            </tr>
+            <tr>
+              <td>5 feet 9 inches (5'9")</td>
+              <td>175.3 cm</td>
+              <td>1.75 m</td>
+            </tr>
+            <tr>
+              <td>6 feet 0 inches (6'0")</td>
+              <td>182.9 cm</td>
+              <td>1.83 m</td>
+            </tr>
+            <tr>
+              <td>6 feet 3 inches (6'3")</td>
+              <td>190.5 cm</td>
+              <td>1.91 m</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Weight Conversion Table (Pounds to Kilograms)</h4>
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Weight (Imperial Pounds)</th>
+              <th>Weight (Metric Kilograms)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>100 lbs</td>
+              <td>45.4 kg</td>
+            </tr>
+            <tr>
+              <td>120 lbs</td>
+              <td>54.4 kg</td>
+            </tr>
+            <tr>
+              <td>140 lbs</td>
+              <td>63.5 kg</td>
+            </tr>
+            <tr>
+              <td>160 lbs</td>
+              <td>72.6 kg</td>
+            </tr>
+            <tr>
+              <td>180 lbs</td>
+              <td>81.6 kg</td>
+            </tr>
+            <tr>
+              <td>200 lbs</td>
+              <td>90.7 kg</td>
+            </tr>
+            <tr>
+              <td>220 lbs</td>
+              <td>99.8 kg</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Importance of Accurate Metric Tracking</h3>
+        <p>Using the metric system is highly recommended because it is the baseline standard for clinical research. When communicating with physicians, clinical staff, or using health calculators, metric parameters prevent rounding errors. For instance, computing BMR using Mifflin-St Jeor or calculating Lean Body Mass uses metric values as their baseline. You can calculate your resting caloric requirements with the <a href="/bmr.html">BMR Calculator</a>, determine your fat-free tissue ratio with the <a href="/lean-body-mass.html">Lean Body Mass Calculator</a>, or customize macronutrient distributions with the <a href="/macro.html">Macro Calculator</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Page Script -->
+  <script src="/app.js" is:inline></script>
+</Layout>
