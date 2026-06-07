@@ -1892,6 +1892,19 @@ body {
     font-size: 0.9375rem;
   }
 
+  .nav-dropdown {
+    width: 100%;
+  }
+
+  .nav-dropdown-trigger {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 0.9375rem;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
   /* Make sure Calories active cta matches layout width */
   .calories-cta {
     flex-direction: column;
@@ -2798,6 +2811,7 @@ body {
 /* Responsive mobile dropdown */
 @media (max-width: 768px) {
   .nav-dropdown-menu {
+    display: none;
     position: static;
     box-shadow: none;
     border: none;
