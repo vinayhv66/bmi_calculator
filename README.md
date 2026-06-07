@@ -1,4 +1,4 @@
-# BMICalc – BMI & Calorie Calculator
+# CalBmi – BMI & Calorie Calculator
 
 A premium, fully static health calculator web app with dark mode, metric/imperial support, animated gauges, and smart cross-page data sharing.
 
