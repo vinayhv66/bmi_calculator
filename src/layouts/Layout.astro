@@ -84,7 +84,64 @@ const { title, description, keywords, canonicalUrl, showFooter = true, bodyClass
         </a>
       </div>
       <nav class="header-nav">
-        <a href="/" class="nav-link">BMI Calculator</a>
+        <!-- BMI Dropdown -->
+        <div class="nav-dropdown" id="bmiDropdown">
+          <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">
+            BMI Calculator
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="/" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(99,102,241,0.1);color:#6366f1">📊</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">General BMI Calculator</span>
+                <span class="nav-dropdown-item-desc">Standard BMI assessment for adults</span>
+              </span>
+            </a>
+            <a href="/bmi-calculator-for-men.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6">👨</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">BMI for Men</span>
+                <span class="nav-dropdown-item-desc">Male-specific analysis & charts</span>
+              </span>
+            </a>
+            <a href="/bmi-calculator-for-women.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(236,72,153,0.1);color:#ec4899">👩</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">BMI for Women</span>
+                <span class="nav-dropdown-item-desc">Female-specific analysis & charts</span>
+              </span>
+            </a>
+            <a href="/bmi-calculator-for-children.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(16,185,129,0.1);color:#10b981">👦</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">BMI for Children</span>
+                <span class="nav-dropdown-item-desc">Percentiles for kids & teens (2-19)</span>
+              </span>
+            </a>
+            <a href="/bmi-calculator-by-age.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6">👴</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">BMI by Age</span>
+                <span class="nav-dropdown-item-desc">Age-adjusted classifications</span>
+              </span>
+            </a>
+            <a href="/bmi-calculator-india.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b">🇮🇳</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">BMI Calculator India</span>
+                <span class="nav-dropdown-item-desc">Modified ranges for South Asians</span>
+              </span>
+            </a>
+            <a href="/bmi-calculator-kg-cm.html" class="nav-dropdown-item">
+              <span class="nav-dropdown-icon" style="background:rgba(14,165,233,0.1);color:#0ea5e9">⚖️</span>
+              <span class="nav-dropdown-item-text">
+                <span class="nav-dropdown-item-name">BMI in kg & cm</span>
+                <span class="nav-dropdown-item-desc">Metric height & weight inputs</span>
+              </span>
+            </a>
+          </div>
+        </div>
 
         <!-- Calculators Dropdown -->
         <div class="nav-dropdown" id="calcDropdown">
